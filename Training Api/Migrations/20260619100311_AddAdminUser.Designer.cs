@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Training_Api.Context;
@@ -11,9 +12,11 @@ using Training_Api.Context;
 namespace Training_Api.Migrations
 {
     [DbContext(typeof(AddDbContext))]
-    partial class AddDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260619100311_AddAdminUser")]
+    partial class AddAdminUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,10 +52,10 @@ namespace Training_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 10,
+                            Id = 1,
                             Email = "Admin@gmail.com",
                             Name = "Admin",
-                            Password = "AQAAAAIAAYagAAAAENCzE6R6qkvUFJ1WoFx8p1KSHhkHVhtriqTQ9/skux2U6pALa2bP0qM3aa37OExebg==",
+                            Password = "AQAAAAIAAYagAAAAEHwXF4y6i+V9xUyhn4kKd9RgTkq0Nx2Gd5IasSxgZqWH/d3Kt84Cp5pw97A2zqacHA==",
                             Role = 1
                         });
                 });
