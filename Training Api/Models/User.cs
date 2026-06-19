@@ -7,13 +7,12 @@ namespace Training_Api.Models
     {
         public int Id { get; set; }
 
-        [MinLength(3)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        [EmailAddress]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
-        [MinLength(6)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
+
+        public List<Workout> Workouts { get; set; } = new();
     }
 }
