@@ -38,6 +38,7 @@ namespace Training_Api.Services
             {
                 Email = registrDto.Email,
                 Name = registrDto.Name,
+                Role = Role.Role.User
             };
 
             user.Password = _passwordHasher.HashPassword(user, registrDto.Password);
@@ -69,6 +70,7 @@ namespace Training_Api.Services
             {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
                 new Claim(ClaimTypes.Name, user.Name)
             };
 

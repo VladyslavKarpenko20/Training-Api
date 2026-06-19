@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-
+﻿
 namespace Training_Api.Models
 {
     public class User
@@ -14,5 +12,7 @@ namespace Training_Api.Models
         public string? Password { get; set; }
 
         public List<Workout> Workouts { get; set; } = new();
+
+        public Role.Role Role { get; set; }
     }
 }
