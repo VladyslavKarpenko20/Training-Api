@@ -32,5 +32,10 @@ namespace Training_Api.Repository
             await _context.SaveChangesAsync();
         }
 
+
+        public IQueryable<User> GetAllUser()
+        {
+            return _context.User.AsQueryable();
+        }
     }
 }

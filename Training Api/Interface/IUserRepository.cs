@@ -10,5 +10,7 @@ namespace Training_Api.Interface
         Task<User?> SearchUserByName(string name);
 
         Task AddUser(User user);
+
+        IQueryable<User> GetAllUser();
     }
 }
