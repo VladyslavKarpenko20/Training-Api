@@ -43,5 +43,14 @@ namespace Training_Api.Controllers
 
             return Ok();
         }
+
+        [Authorize(Roles = nameof(Role.Role.Admin))]
+        [HttpPut("Give/Role/Admin/{userId:int}")]
+        public async Task<IActionResult> GiveRoleAdmin(int userId)
+        {
+            await _userServices.GiveRoleAdmin(userId);
+
+            return Ok();
+        }
     }
 }

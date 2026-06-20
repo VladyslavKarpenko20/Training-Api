@@ -48,5 +48,12 @@ namespace Training_Api.Repository
             _context.Remove(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task GiveRoleAdmin(User user)
+        {
+            _context.Update(user);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

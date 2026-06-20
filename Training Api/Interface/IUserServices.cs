@@ -9,5 +9,7 @@ namespace Training_Api.Interface
         Task<UserReadDto> GetUserById(int userId);
 
         Task DeleteUser(int userId);
+
+        Task GiveRoleAdmin(int userId);
     }
 }

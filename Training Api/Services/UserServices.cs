@@ -77,5 +77,17 @@ namespace Training_Api.Services
 
             await _userRepository.DeleteUser(user);
         }
+
+        public async Task GiveRoleAdmin(int userId)
+        {
+            var user = await _userRepository.GetUserById(userId);
+
+            if (user == null)
+                throw new NotFoundExceptions("User not found");
+
+            user.Role = Role.Role.Admin;
+
+            await _userRepository.GiveRoleAdmin(user);
+        }
     }
 }

@@ -16,5 +16,7 @@ namespace Training_Api.Interface
         Task<User?> GetUserById(int userId);
 
         Task DeleteUser(User user);
+
+        Task GiveRoleAdmin(User user);
     }
 }
