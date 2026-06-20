@@ -25,6 +25,8 @@ builder.Services.AddScoped<IAuthServices, AuthServices>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+builder.Services.AddScoped<IWorkoutServices, WorkoutServices>();
 
 
 builder.Services.AddDbContext<AddDbContext>(options => options.UseNpgsql(builder.Configuration["Database:ConnectionsString"], optionsSql => optionsSql.EnableRetryOnFailure()));

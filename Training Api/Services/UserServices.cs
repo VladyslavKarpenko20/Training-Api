@@ -55,7 +55,6 @@ namespace Training_Api.Services
                     User = w.User,
                     WorkoutExerciseShort = w.WorkoutExercise.Select(we => new WorkoutExerciseShortDto
                     {
-                        Id = we.Id,
                         Name = we.Name,
                         Repetitions = we.Repetitions,
                         Weight = we.Weight
