@@ -25,5 +25,14 @@ namespace Training_Api.Controllers
             return Ok(listUser);
 
         }
+
+        [Authorize(Roles = nameof(Role.Role.Admin))]
+        [HttpGet("Get/User/By/Id/{userId:int}")]
+        public async Task<IActionResult> GetUserById(int userId)
+        {
+            var res = await _userServices.GetUserById(userId);
+
+            return Ok(res);
+        }
     }
 }

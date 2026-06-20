@@ -37,5 +37,10 @@ namespace Training_Api.Repository
         {
             return _context.User.AsQueryable();
         }
+
+        public async Task<User?> GetUserById(int userId)
+        {
+            return await _context.User.Include(w => w.Workouts).ThenInclude(w => w.WorkoutExercise).FirstOrDefaultAsync(u => u.Id == userId);
+        }
     }
 }

@@ -31,5 +31,41 @@ namespace Training_Api.Services
 
             return res;
         }
+
+        public async Task<UserReadDto> GetUserById(int userId)
+        {
+            if (userId < 1)
+                throw new BadRequestExceptions("Invalid userId data");
+
+            var res = await _userRepository.GetUserById(userId);
+
+            if (res == null)
+                throw new NotFoundExceptions("User not found");
+
+            var user = new UserReadDto
+            {
+                Id = res.Id,
+                Name = res.Name,
+                Email = res.Email,
+                Role = res.Role,
+                Workouts = res.Workouts.Select(w => new WorkoutReadDto
+                {
+                    Id= w.Id,
+                    Date = w.Date,
+                    User = w.User,
+                    WorkoutExerciseShort = w.WorkoutExercise.Select(we => new WorkoutExerciseShortDto
+                    {
+                        Id = we.Id,
+                        Name = we.Name,
+                        Repetitions = we.Repetitions,
+                        Weight = we.Weight
+                    }).ToList()
+                }).ToList()
+                
+            };
+
+            return user;
+
+        }
     }
 }

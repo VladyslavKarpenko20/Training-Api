@@ -11,9 +11,9 @@ namespace Training_Api.Context
 
         public DbSet<User> User { get; set; }
 
-        public DbSet<Workout> Workouts {  get; set; }
+        public DbSet<Workout> Workout {  get; set; }
 
-        public DbSet<WorkoutExercise> WorkoutExercises { get; set; }
+        public DbSet<WorkoutExercise> WorkoutExercise { get; set; }
 
 
         public AddDbContext(DbContextOptions<AddDbContext> options, IConfiguration configuration)

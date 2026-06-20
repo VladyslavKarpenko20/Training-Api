@@ -1,4 +1,6 @@
-﻿namespace Training_Api.DtoModels
+﻿using Training_Api.Models;
+
+namespace Training_Api.DtoModels
 {
     public class UserReadDto
     {
@@ -9,5 +11,7 @@
         public string? Email { get; set; }
 
         public Role.Role Role { get; set; }
+
+        public List<WorkoutReadDto> Workouts { get; set; } = new();
     }
 }
