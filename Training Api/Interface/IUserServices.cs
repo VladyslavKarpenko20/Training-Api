@@ -7,5 +7,7 @@ namespace Training_Api.Interface
         List<UserReadDto> GetAllUser(int Page, int PageSize);
 
         Task<UserReadDto> GetUserById(int userId);
+
+        Task DeleteUser(int userId);
     }
 }

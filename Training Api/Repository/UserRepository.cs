@@ -42,5 +42,11 @@ namespace Training_Api.Repository
         {
             return await _context.User.Include(w => w.Workouts).ThenInclude(w => w.WorkoutExercise).FirstOrDefaultAsync(u => u.Id == userId);
         }
+
+        public async Task DeleteUser(User user)
+        {
+            _context.Remove(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }

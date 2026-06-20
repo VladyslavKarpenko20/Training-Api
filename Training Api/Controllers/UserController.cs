@@ -34,5 +34,14 @@ namespace Training_Api.Controllers
 
             return Ok(res);
         }
+
+        [Authorize(Roles = nameof(Role.Role.Admin))]
+        [HttpDelete("Delete/User/By/Id/{userId:int}")]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            await _userServices.DeleteUser(userId);
+
+            return Ok();
+        }
     }
 }

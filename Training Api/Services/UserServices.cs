@@ -67,5 +67,15 @@ namespace Training_Api.Services
             return user;
 
         }
+
+        public async Task DeleteUser(int userId)
+        {
+            var user = await _userRepository.GetUserById(userId);
+
+            if (user == null)
+                throw new NotFoundExceptions("User not found");
+
+            await _userRepository.DeleteUser(user);
+        }
     }
 }

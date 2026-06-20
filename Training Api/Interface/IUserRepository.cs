@@ -14,5 +14,7 @@ namespace Training_Api.Interface
         IQueryable<User> GetAllUser();
 
         Task<User?> GetUserById(int userId);
+
+        Task DeleteUser(User user);
     }
 }
