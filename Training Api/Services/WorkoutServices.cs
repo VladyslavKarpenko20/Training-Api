@@ -2,6 +2,7 @@
 using Training_Api.Interface;
 using Training_Api.Exceptions;
 using Training_Api.Models;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
 
 namespace Training_Api.Services
 {
@@ -33,6 +34,25 @@ namespace Training_Api.Services
             };
 
             await _repository.AddWorkout(workout);
+        }
+
+        public async Task<List<WorkoutReadDto>> GetMyWorkout(int userId)
+        {
+            var listWorkout = await _repository.GetMyWorkout(userId);
+
+            return listWorkout.Select(x => new WorkoutReadDto
+            {
+                Id = x.Id,
+                Date = x.Date,
+                UserId = x.UserId,
+                WorkoutExerciseShort = x.WorkoutExercise.Select(y => new WorkoutExerciseShortDto
+                {
+                    Name = y.Name,
+                    Weight = y.Weight,
+                    Repetitions = y.Repetitions
+                }).ToList()
+            }).ToList();
+
         }
 
     }

@@ -52,7 +52,7 @@ namespace Training_Api.Services
                 {
                     Id= w.Id,
                     Date = w.Date,
-                    User = w.User,
+                    UserId = w.UserId,
                     WorkoutExerciseShort = w.WorkoutExercise.Select(we => new WorkoutExerciseShortDto
                     {
                         Name = we.Name,

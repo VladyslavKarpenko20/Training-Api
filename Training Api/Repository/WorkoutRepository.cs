@@ -1,4 +1,5 @@
-﻿using Training_Api.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Training_Api.Context;
 using Training_Api.Interface;
 using Training_Api.Models;
 
@@ -18,6 +19,11 @@ namespace Training_Api.Repository
             await _context.Workout.AddAsync(workout);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Workout>> GetMyWorkout(int userId)
+        {
+            return await _context.Workout.Include(x => x.WorkoutExercise).Include(y => y.User).Where(x => x.UserId == userId).ToListAsync();
         }
     }
 }

@@ -6,5 +6,7 @@ namespace Training_Api.Interface
     {
         Task AddWorkout(Workout workout);
 
+        Task<List<Workout>> GetMyWorkout(int userId);
+
     }
 }

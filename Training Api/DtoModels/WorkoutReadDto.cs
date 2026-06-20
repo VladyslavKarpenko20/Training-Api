@@ -8,7 +8,7 @@ namespace Training_Api.DtoModels
 
         public DateTimeOffset Date { get; set; }
 
-        public User? User { get; set; }
+        public int UserId { get; set; }
 
         public List<WorkoutExerciseShortDto> WorkoutExerciseShort { get; set; } = new();
     }

@@ -36,5 +36,21 @@ namespace Training_Api.Controllers
             else
                 return Unauthorized("Failed to identify user from token");
         }
+
+        [Authorize]
+        [HttpGet("Get/My/Workout")]
+        public async Task<IActionResult> GetMyWorkout()
+        {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (int.TryParse(userId, out int res))
+            {
+                var list = await _services.GetMyWorkout(res);
+
+                return Ok(list);
+            }
+            else
+                return Unauthorized("Failed to identify user from token");
+        }
     }
 }
