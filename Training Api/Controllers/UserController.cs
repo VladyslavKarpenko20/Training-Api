@@ -18,7 +18,7 @@ namespace Training_Api.Controllers
 
         [Authorize(Roles = nameof(Role.Role.Admin))]
         [HttpGet("Get/All/User/{Page:int}/{PageSize:int}")]
-        public async Task<IActionResult> GetAllUser(int Page, int PageSize)
+        public IActionResult GetAllUser(int Page, int PageSize)
         {
             var listUser = _userServices.GetAllUser(Page, PageSize);
 
@@ -49,6 +49,15 @@ namespace Training_Api.Controllers
         public async Task<IActionResult> GiveRoleAdmin(int userId)
         {
             await _userServices.GiveRoleAdmin(userId);
+
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Role.Admin))]
+        [HttpPut("Give/Role/User/{userId:int}")]
+        public async Task<IActionResult> GiveRoleUser(int userId)
+        {
+            await _userServices.GiveRoleUser(userId);
 
             return Ok();
         }

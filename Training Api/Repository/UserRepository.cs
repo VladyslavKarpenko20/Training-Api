@@ -45,13 +45,20 @@ namespace Training_Api.Repository
 
         public async Task DeleteUser(User user)
         {
-            _context.Remove(user);
+            _context.User.Remove(user);
             await _context.SaveChangesAsync();
         }
 
         public async Task GiveRoleAdmin(User user)
         {
-            _context.Update(user);
+            _context.User.Update(user);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task GiveRoleUser(User user)
+        {
+            _context.User.Update(user);
 
             await _context.SaveChangesAsync();
         }
