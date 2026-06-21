@@ -55,5 +55,26 @@ namespace Training_Api.Services
 
         }
 
+        public List<WorkoutReadDto> GetAllWorkout(int Page, int PageSize)
+        {
+            if (Page < 1 || PageSize < 1 || PageSize > 10000)
+                throw new BadRequestExceptions("Invalid data Page or PageSize");
+
+            var listWorkout = _repository.GetAllWorkout();
+
+            return listWorkout.Select(x => new WorkoutReadDto
+            {
+                Id = x.Id,
+                Date = x.Date,
+                UserId = x.UserId,
+                WorkoutExerciseShort = x.WorkoutExercise.Select(y => new WorkoutExerciseShortDto
+                {
+                    Name = y.Name,
+                    Repetitions = y.Repetitions,
+                    Weight = y.Weight
+                }).ToList()
+
+            }).Skip((Page - 1) * PageSize).Take(PageSize).ToList();
+        }
     }
 }

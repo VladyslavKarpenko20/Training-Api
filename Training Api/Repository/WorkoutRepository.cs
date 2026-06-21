@@ -25,5 +25,10 @@ namespace Training_Api.Repository
         {
             return await _context.Workout.Include(x => x.WorkoutExercise).Include(y => y.User).Where(x => x.UserId == userId).ToListAsync();
         }
+
+        public IQueryable<Workout> GetAllWorkout()
+        {
+            return _context.Workout.AsQueryable();
+        }
     }
 }

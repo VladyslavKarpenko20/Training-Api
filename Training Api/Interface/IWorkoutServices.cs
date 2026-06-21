@@ -7,5 +7,7 @@ namespace Training_Api.Interface
         Task AddWorkout(WorkoutWriteDto workoutWrite, int userId);
 
         Task<List<WorkoutReadDto>> GetMyWorkout(int userId);
+
+        List<WorkoutReadDto> GetAllWorkout(int Page, int PageSize);
     }
 }

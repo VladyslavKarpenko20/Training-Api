@@ -52,5 +52,14 @@ namespace Training_Api.Controllers
             else
                 return Unauthorized("Failed to identify user from token");
         }
+
+        [Authorize(Roles = nameof(Role.Role.Admin))]
+        [HttpGet("Get/All/Workout/{Page:int}/{PageSize:int}")]
+        public IActionResult GetAllWorkout(int Page = 1, int PageSize = 10)
+        {
+            var listWorkout = _services.GetAllWorkout(Page, PageSize);
+
+            return Ok(listWorkout);
+        }
     }
 }

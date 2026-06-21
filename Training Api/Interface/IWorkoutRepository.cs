@@ -8,5 +8,7 @@ namespace Training_Api.Interface
 
         Task<List<Workout>> GetMyWorkout(int userId);
 
+        IQueryable<Workout> GetAllWorkout();
+
     }
 }
