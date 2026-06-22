@@ -77,5 +77,14 @@ namespace Training_Api.Controllers
             else
                 return Unauthorized("Failed to identify user from token");
         }
+
+        [Authorize(Roles = nameof(Role.Role.Admin))]
+        [HttpDelete("Delete/Workout/{userId:int}/{workoutId:int}")]
+        public async Task<IActionResult> DeleteWorkout(int userId, int workoutId)
+        {
+            await _services.DeleteMyWorkout(workoutId, userId);
+
+            return Ok();
+        }
     }
 }
