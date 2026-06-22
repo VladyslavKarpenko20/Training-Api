@@ -76,5 +76,16 @@ namespace Training_Api.Services
 
             }).Skip((Page - 1) * PageSize).Take(PageSize).ToList();
         }
+
+        public async Task DeleteMyWorkout(int workoutId, int userId)
+        {
+            var workout = await _repository.GetWorkoutByIdAndUser(userId, workoutId);
+
+            if (workout == null)
+                throw new NotFoundExceptions("Workout not found");
+
+            await _repository.DeleteMyWorkout(workout);
+        }
+
     }
 }

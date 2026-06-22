@@ -9,5 +9,8 @@ namespace Training_Api.Interface
         Task<List<WorkoutReadDto>> GetMyWorkout(int userId);
 
         List<WorkoutReadDto> GetAllWorkout(int Page, int PageSize);
+
+        Task DeleteMyWorkout(int workoutId, int userId);
+        
     }
 }

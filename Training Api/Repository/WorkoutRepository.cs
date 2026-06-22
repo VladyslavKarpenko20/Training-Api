@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
+using NpgsqlTypes;
 using Training_Api.Context;
 using Training_Api.Interface;
 using Training_Api.Models;
@@ -30,5 +32,19 @@ namespace Training_Api.Repository
         {
             return _context.Workout.AsQueryable();
         }
+
+
+        public async Task DeleteMyWorkout(Workout workout)
+        {
+            _context.Workout.Remove(workout);
+
+            await _context.SaveChangesAsync();  
+        }
+
+        public async Task<Workout?> GetWorkoutByIdAndUser(int userId , int workoutId)
+        {
+            return await _context.Workout.FirstOrDefaultAsync(x => x.Id == workoutId && x.UserId == userId);
+        }
+
     }
 }

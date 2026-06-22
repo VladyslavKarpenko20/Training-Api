@@ -61,5 +61,21 @@ namespace Training_Api.Controllers
 
             return Ok(listWorkout);
         }
+
+        [Authorize]
+        [HttpDelete("Delete/My/Workout/{workoutId:int}")]
+        public async Task<IActionResult> DeleteMyWorkout(int workoutId)
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (int.TryParse(userId, out int result))
+            {
+                await _services.DeleteMyWorkout(workoutId, result);
+
+                return Ok();
+            }
+            else
+                return Unauthorized("Failed to identify user from token");
+        }
     }
 }

@@ -10,5 +10,9 @@ namespace Training_Api.Interface
 
         IQueryable<Workout> GetAllWorkout();
 
+        Task DeleteMyWorkout(Workout workout);
+
+        Task<Workout?> GetWorkoutByIdAndUser(int userId, int workoutId);
+
     }
 }
