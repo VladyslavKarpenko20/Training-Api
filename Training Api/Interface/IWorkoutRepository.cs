@@ -14,5 +14,6 @@ namespace Training_Api.Interface
 
         Task<Workout?> GetWorkoutByIdAndUser(int userId, int workoutId);
 
+
     }
 }

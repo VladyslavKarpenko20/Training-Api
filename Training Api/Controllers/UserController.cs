@@ -20,7 +20,7 @@ namespace Training_Api.Controllers
         [HttpGet("Get/All/User/{Page:int}/{PageSize:int}")]
         public IActionResult GetAllUser(int Page, int PageSize)
         {
-            var listUser = _userServices.GetAllUser(Page, PageSize);
+            var listUser = _userServices.GetAllUser(Page = 1, PageSize = 10);
 
             return Ok(listUser);
 

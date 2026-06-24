@@ -80,11 +80,21 @@ namespace Training_Api.Controllers
 
         [Authorize(Roles = nameof(Role.Role.Admin))]
         [HttpDelete("Delete/Workout/{userId:int}/{workoutId:int}")]
-        public async Task<IActionResult> DeleteWorkout(int userId, int workoutId)
+        public async Task<IActionResult> DeleteMyWorkout(int userId, int workoutId)
         {
             await _services.DeleteMyWorkout(workoutId, userId);
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("Get/Workout/By/Date")]
+        public async Task<IActionResult> GetWorkoutByDate([FromQuery] DateTimeOffset? startDate, [FromQuery] DateTimeOffset? endDate, [FromQuery] int Page = 1, [FromQuery] int PageSize = 10 )
+        {
+            var listWorkout = await _services.SearchWorkoutByData(startDate, endDate, Page, PageSize);
+
+            return Ok(listWorkout);
+
         }
     }
 }

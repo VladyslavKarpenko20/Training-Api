@@ -1,4 +1,5 @@
 ﻿using Training_Api.DtoModels;
+using Training_Api.Models;
 
 namespace Training_Api.Interface
 {
@@ -11,6 +12,8 @@ namespace Training_Api.Interface
         List<WorkoutReadDto> GetAllWorkout(int Page, int PageSize);
 
         Task DeleteMyWorkout(int workoutId, int userId);
-        
+
+        Task<List<Workout>> SearchWorkoutByData(DateTimeOffset? startData, DateTimeOffset? endData, int Page, int PageSize);
+
     }
 }

@@ -46,5 +46,6 @@ namespace Training_Api.Repository
             return await _context.Workout.FirstOrDefaultAsync(x => x.Id == workoutId && x.UserId == userId);
         }
 
+
     }
 }

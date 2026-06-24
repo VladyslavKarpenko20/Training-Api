@@ -3,6 +3,7 @@ using Training_Api.Interface;
 using Training_Api.Exceptions;
 using Training_Api.Models;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace Training_Api.Services
 {
@@ -85,6 +86,26 @@ namespace Training_Api.Services
                 throw new NotFoundExceptions("Workout not found");
 
             await _repository.DeleteMyWorkout(workout);
+        }
+
+        public async Task<List<Workout>> SearchWorkoutByData(DateTimeOffset? startDat, DateTimeOffset? endDate, int Page, int PageSize)
+        {
+            if (Page < 1 || PageSize < 1 || PageSize > 10000)
+                throw new BadRequestExceptions("Invalid Page or PageSize data");
+
+            if (startDat > endDate)
+                throw new BadRequestExceptions("The start time cannot be greater than the end time");
+
+            Console.WriteLine($"start {startDat} || end {endDate} ");
+
+            IQueryable<Workout> listWorkout = _repository.GetAllWorkout();
+
+            if (startDat != null)
+                listWorkout = listWorkout.Where(x => x.Date >= startDat);
+            if (endDate != null)
+                listWorkout = listWorkout.Where(x => x.Date <= endDate);
+
+            return await listWorkout.Skip((Page - 1) * PageSize).Take(PageSize).ToListAsync();
         }
 
     }
