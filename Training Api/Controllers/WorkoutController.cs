@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using Training_Api.DtoModels;
 using Training_Api.Interface;
@@ -96,5 +97,22 @@ namespace Training_Api.Controllers
             return Ok(listWorkout);
 
         }
+
+        [Authorize]
+        [HttpPut("Update/My/Workout/Date")]
+        public async Task<IActionResult> UpdateMyWorkoutDate([FromQuery] int workoutId,[FromQuery] DateTimeOffset? newDate)
+        {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userId, out int result))
+                return Unauthorized("Failed to identify user from token");
+
+
+            await _services.UpdateMyWorkoutDate(workoutId, result, newDate);
+
+            return Ok();
+        }
+
     }
+    
 }

@@ -46,6 +46,13 @@ namespace Training_Api.Repository
             return await _context.Workout.FirstOrDefaultAsync(x => x.Id == workoutId && x.UserId == userId);
         }
 
+        public async Task UpdateMyWorkoutDate(Workout workout)
+        {
+            _context.Workout.Update(workout);
+
+            await _context.SaveChangesAsync();
+        }
+
 
     }
 }

@@ -108,5 +108,21 @@ namespace Training_Api.Services
             return await listWorkout.Skip((Page - 1) * PageSize).Take(PageSize).ToListAsync();
         }
 
+        public async Task UpdateMyWorkoutDate(int workoutId, int userId, DateTimeOffset? newDate)
+        {
+
+            if (newDate == null || newDate > DateTimeOffset.Now.AddYears(1) || newDate < DateTimeOffset.Now.AddYears(-1))
+                throw new BadRequestExceptions("Invalid time Data");
+
+            var workout = await _repository.GetWorkoutByIdAndUser(userId, workoutId);
+
+            if (workout == null)
+                throw new NotFoundExceptions("Workout not found");
+
+            workout.Date = newDate.Value;
+
+            await _repository.UpdateMyWorkoutDate(workout);
+        }
+
     }
 }
