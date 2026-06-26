@@ -18,5 +18,7 @@ namespace Training_Api.Interface
         Task UpdateMyWorkoutDate(int workoutId, int userId, DateTimeOffset? newDate);
 
         Task UpdateMyWorkoutExcercise(int workoutId, int workoutExcerciseId, int userId, UpdateWorkoutExcercise updateWorkout);
+
+        Task DeleteMyWorkoutExcercise(int workoutId, int workoutExcerciseId, int userId);
     }
 }

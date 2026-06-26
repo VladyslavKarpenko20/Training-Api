@@ -165,5 +165,21 @@ namespace Training_Api.Services
 
         } 
 
+
+        public async Task DeleteMyWorkoutExcercise(int workoutId, int workoutExcerciseId, int userId)
+        {
+            var workout = await _repository.GetWorkoutByIdAndUser(userId,workoutId);
+
+            if (workout == null)
+                throw new NotFoundExceptions("Workout not found");
+
+            var workoutExcercise = await _repository.GetWorkoutExcerciseById(workoutId, workoutExcerciseId);
+
+            if (workoutExcercise == null)
+                throw new NotFoundExceptions("WorkoutExercise not found");
+
+            await _repository.DeleteMyWorkoutExercise(workoutExcercise);
+        }
+
     }
 }

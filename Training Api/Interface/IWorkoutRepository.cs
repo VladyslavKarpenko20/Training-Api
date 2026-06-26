@@ -20,5 +20,7 @@ namespace Training_Api.Interface
 
         Task<WorkoutExercise?> GetWorkoutExcerciseById(int workoutId, int workoutExcerciseId);
 
+        Task DeleteMyWorkoutExercise(WorkoutExercise workoutExercise);
+
     }
 }

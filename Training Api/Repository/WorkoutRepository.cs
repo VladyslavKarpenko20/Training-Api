@@ -65,6 +65,11 @@ namespace Training_Api.Repository
             return await _context.WorkoutExercise.FirstOrDefaultAsync(x => x.Id == workoutExcerciseId && x.WorkoutId == workoutId);
         }
 
+        public async Task DeleteMyWorkoutExercise(WorkoutExercise workoutExercise)
+        {
+            _context.WorkoutExercise.Remove(workoutExercise);
 
+            await _context.SaveChangesAsync();
+        }
     }
 }
