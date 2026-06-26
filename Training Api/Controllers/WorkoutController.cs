@@ -39,14 +39,14 @@ namespace Training_Api.Controllers
         }
 
         [Authorize]
-        [HttpGet("Get/My/Workout")]
-        public async Task<IActionResult> GetMyWorkout()
+        [HttpGet("Get/My/Workout/{Page:int}/{PageSize:int}")]
+        public async Task<IActionResult> GetMyWorkout(int Page, int PageSize)
         {
             string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (int.TryParse(userId, out int res))
             {
-                var list = await _services.GetMyWorkout(res);
+                var list = await _services.GetMyWorkout(res, Page, PageSize);
 
                 return Ok(list);
             }
@@ -115,7 +115,7 @@ namespace Training_Api.Controllers
 
         [Authorize]
         [HttpPut("Update/Workout/Excercise/{workoutId:int}/{workoutExcerciseId:int}")]
-        public async Task<IActionResult> UpdateMyWorkoutExcercise(int workoutId, int workoutExcerciseId , UpdateWorkoutExcercise updateWorkout)
+        public async Task<IActionResult> UpdateMyWorkoutExcercise(int workoutId, int workoutExcerciseId , WorkoutExerciseRequestDto updateWorkout)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -137,6 +137,20 @@ namespace Training_Api.Controllers
                 return Unauthorized("Failed to identify user from token");
 
             await _services.DeleteMyWorkoutExcercise(workoutId,workoutExerciseId, result);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("Add/My/WorkoutExercise/{workoutId:int}")]
+        public async Task<IActionResult> AddMyWorkoutExercise(int workoutId, WorkoutExerciseRequestDto addWorkoutExercise)
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userId, out int result))
+                return Unauthorized("Failed to identify user from token");
+
+            await _services.AddMyWorkoutExercise(workoutId,result, addWorkoutExercise);
 
             return Ok();
         }

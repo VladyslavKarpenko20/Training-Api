@@ -71,5 +71,12 @@ namespace Training_Api.Repository
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task AddMyWorkoutExercise(WorkoutExercise workoutExercise)
+        {
+            await _context.WorkoutExercise.AddAsync(workoutExercise);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

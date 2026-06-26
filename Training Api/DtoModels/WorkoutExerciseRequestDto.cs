@@ -1,6 +1,6 @@
 ﻿namespace Training_Api.DtoModels
 {
-    public class UpdateWorkoutExcercise
+    public class WorkoutExerciseRequestDto
     {
         public string? Name { get; set; }
 

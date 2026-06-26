@@ -22,5 +22,7 @@ namespace Training_Api.Interface
 
         Task DeleteMyWorkoutExercise(WorkoutExercise workoutExercise);
 
+        Task AddMyWorkoutExercise(WorkoutExercise workoutExercise);
+
     }
 }
