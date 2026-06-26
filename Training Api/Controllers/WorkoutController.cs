@@ -40,7 +40,7 @@ namespace Training_Api.Controllers
 
         [Authorize]
         [HttpGet("Get/My/Workout/{Page:int}/{PageSize:int}")]
-        public async Task<IActionResult> GetMyWorkout(int Page, int PageSize)
+        public async Task<IActionResult> GetMyWorkout(int Page = 1, int PageSize = 10)
         {
             string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 

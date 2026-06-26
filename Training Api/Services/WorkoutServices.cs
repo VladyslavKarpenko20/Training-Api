@@ -101,7 +101,6 @@ namespace Training_Api.Services
             if (startDat > endDate)
                 throw new BadRequestExceptions("The start time cannot be greater than the end time");
 
-            Console.WriteLine($"start {startDat} || end {endDate} ");
 
             IQueryable<Workout> listWorkout = _repository.GetAllWorkout();
 
