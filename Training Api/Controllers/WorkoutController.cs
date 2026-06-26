@@ -113,6 +113,20 @@ namespace Training_Api.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpPut("Update/Workout/Excercise/{workoutId:int}/{workoutExcerciseId:int}")]
+        public async Task<IActionResult> UpdateMyWorkoutExcercise(int workoutId, int workoutExcerciseId , UpdateWorkoutExcercise updateWorkout)
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userId, out int result))
+                return Unauthorized("Failed to identify user from token");
+
+            await _services.UpdateMyWorkoutExcercise(workoutId, workoutExcerciseId,result,updateWorkout);
+
+            return Ok();
+        }
+
     }
     
 }

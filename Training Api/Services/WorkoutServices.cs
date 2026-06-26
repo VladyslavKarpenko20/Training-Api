@@ -48,6 +48,7 @@ namespace Training_Api.Services
                 UserId = x.UserId,
                 WorkoutExerciseShort = x.WorkoutExercise.Select(y => new WorkoutExerciseShortDto
                 {
+                    Id = y.Id,
                     Name = y.Name,
                     Weight = y.Weight,
                     Repetitions = y.Repetitions
@@ -70,6 +71,7 @@ namespace Training_Api.Services
                 UserId = x.UserId,
                 WorkoutExerciseShort = x.WorkoutExercise.Select(y => new WorkoutExerciseShortDto
                 {
+                    Id = y.Id,
                     Name = y.Name,
                     Repetitions = y.Repetitions,
                     Weight = y.Weight
@@ -88,7 +90,7 @@ namespace Training_Api.Services
             await _repository.DeleteMyWorkout(workout);
         }
 
-        public async Task<List<Workout>> SearchWorkoutByData(DateTimeOffset? startDat, DateTimeOffset? endDate, int Page, int PageSize)
+        public async Task<List<WorkoutReadDto>> SearchWorkoutByData(DateTimeOffset? startDat, DateTimeOffset? endDate, int Page, int PageSize)
         {
             if (Page < 1 || PageSize < 1 || PageSize > 10000)
                 throw new BadRequestExceptions("Invalid Page or PageSize data");
@@ -105,7 +107,22 @@ namespace Training_Api.Services
             if (endDate != null)
                 listWorkout = listWorkout.Where(x => x.Date <= endDate);
 
-            return await listWorkout.Skip((Page - 1) * PageSize).Take(PageSize).ToListAsync();
+            var workout = listWorkout.Select(x => new WorkoutReadDto 
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                Date = x.Date,
+                WorkoutExerciseShort = x.WorkoutExercise.Select(y => new WorkoutExerciseShortDto
+                {
+                    Id = y.Id,
+                    Weight = y.Weight,
+                    Name = y.Name,
+                    Repetitions = y.Repetitions
+                }).ToList()
+            }).ToList();
+
+
+            return workout.Skip((Page - 1) * PageSize).Take(PageSize).ToList();
         }
 
         public async Task UpdateMyWorkoutDate(int workoutId, int userId, DateTimeOffset? newDate)
@@ -123,6 +140,30 @@ namespace Training_Api.Services
 
             await _repository.UpdateMyWorkoutDate(workout);
         }
+
+
+        public async Task UpdateMyWorkoutExcercise(int workoutId , int workoutExcerciseId, int userId, UpdateWorkoutExcercise updateWorkout)
+        {
+            var workout = await _repository.GetWorkoutByIdAndUser(userId , workoutId);
+
+            if (workout == null)
+                throw new NotFoundExceptions("Workout not found");
+
+            var workoutExcercise = await _repository.GetWorkoutExcerciseById(workoutId, workoutExcerciseId);
+
+            if (workoutExcercise == null)
+                throw new NotFoundExceptions("Workout excercise not found");
+
+            if (string.IsNullOrWhiteSpace(updateWorkout.Name) || updateWorkout.Weight < 0 || updateWorkout.Repetitions < 1)
+                throw new BadRequestExceptions("Invalid data");
+
+            workoutExcercise.Weight = updateWorkout.Weight;
+            workoutExcercise.Repetitions = updateWorkout.Repetitions;
+            workoutExcercise.Name = updateWorkout.Name;
+
+            await _repository.UpdateMyWorkoutExcercise(workoutExcercise);
+
+        } 
 
     }
 }
