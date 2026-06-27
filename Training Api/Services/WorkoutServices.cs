@@ -4,6 +4,7 @@ using Training_Api.Exceptions;
 using Training_Api.Models;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
 using Microsoft.EntityFrameworkCore;
+using Training_Api.Enums;
 
 namespace Training_Api.Services
 {
@@ -203,7 +204,35 @@ namespace Training_Api.Services
 
             await _repository.AddMyWorkoutExercise(workoutExercise);
         }
- 
+
+        public List<WorkoutReadDto> SearchMyWorkoutByStatus(Status status, int userId, int Page, int PageSize)
+        {
+            if (Page < 1 || PageSize < 1 || PageSize > 10000)
+                throw new BadRequestExceptions("Invalid Page or PageSize data");
+
+            var listWorkout = _repository.GetAllWorkout();
+
+            listWorkout = listWorkout.Where(x => x.UserId == userId && x.Status == status);
+
+            return listWorkout.Skip((Page - 1) * PageSize).Take(PageSize).Select(x => new WorkoutReadDto
+            {
+                Id = x.Id,
+                Date = x.Date,
+                UserId = x.UserId,
+                WorkoutExerciseShort = x.WorkoutExercise.Select(y => new WorkoutExerciseShortDto
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                    Repetitions = y.Repetitions,
+                    Weight = y.Weight
+                }).ToList(),
+            
+            
+            }).ToList();
+
+        }
+
+
 
 
     }

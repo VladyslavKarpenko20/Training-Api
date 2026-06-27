@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using Training_Api.DtoModels;
+using Training_Api.Enums;
 using Training_Api.Interface;
 
 namespace Training_Api.Controllers
@@ -153,6 +154,20 @@ namespace Training_Api.Controllers
             await _services.AddMyWorkoutExercise(workoutId,result, addWorkoutExercise);
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("Search/Workout/By/Status/{Page:int}/{PageSize:int}")]
+        public IActionResult SearchWorkoutByStatus(Status status,int Page = 1, int PageSize = 10)
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userId, out int result))
+                return Unauthorized("Failed to identify user from token");
+
+            var listWorkout = _services.SearchMyWorkoutByStatus(status, result, Page, PageSize);
+            
+            return Ok(listWorkout);
         }
 
     }

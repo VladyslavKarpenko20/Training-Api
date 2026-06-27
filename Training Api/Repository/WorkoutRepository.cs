@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
 using NpgsqlTypes;
+using System.Threading.Tasks;
 using Training_Api.Context;
+using Training_Api.Enums;
 using Training_Api.Interface;
 using Training_Api.Models;
 
@@ -78,7 +80,6 @@ namespace Training_Api.Repository
 
             await _context.SaveChangesAsync();
         }
-
 
     }
 }

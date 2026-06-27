@@ -1,4 +1,5 @@
 ﻿using Training_Api.DtoModels;
+using Training_Api.Enums;
 using Training_Api.Models;
 
 namespace Training_Api.Interface
@@ -22,5 +23,7 @@ namespace Training_Api.Interface
         Task DeleteMyWorkoutExcercise(int workoutId, int workoutExcerciseId, int userId);
 
         Task AddMyWorkoutExercise(int workoutId, int userId, WorkoutExerciseRequestDto addWorkoutExercise);
+
+        List<WorkoutReadDto> SearchMyWorkoutByStatus(Status status, int userId, int Page, int PageSize);
     }
 }
