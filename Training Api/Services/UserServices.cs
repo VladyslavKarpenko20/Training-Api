@@ -51,7 +51,8 @@ namespace Training_Api.Services
                 Workouts = res.Workouts.Select(w => new WorkoutReadDto
                 {
                     Id= w.Id,
-                    Date = w.Date,
+                    startDate = w.startDate,
+                    endDate = w.endDate,
                     UserId = w.UserId,
                     WorkoutExerciseShort = w.WorkoutExercise.Select(we => new WorkoutExerciseShortDto
                     {

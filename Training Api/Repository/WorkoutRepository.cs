@@ -27,12 +27,12 @@ namespace Training_Api.Repository
 
         public async Task<List<Workout>> GetMyWorkout(int userId)
         {
-            return await _context.Workout.Include(x => x.WorkoutExercise).Include(y => y.User).Where(x => x.UserId == userId).ToListAsync();
+            return await _context.Workout.AsNoTracking().Include(x => x.WorkoutExercise).Include(y => y.User).Where(x => x.UserId == userId).ToListAsync();
         }
 
         public IQueryable<Workout> GetAllWorkout()
         {
-            return _context.Workout.Include(x => x.WorkoutExercise).AsQueryable();
+            return _context.Workout.AsNoTracking().Include(x => x.WorkoutExercise).AsQueryable();
         }
 
 
@@ -48,7 +48,7 @@ namespace Training_Api.Repository
             return await _context.Workout.Include(x => x.WorkoutExercise).FirstOrDefaultAsync(x => x.Id == workoutId && x.UserId == userId);
         }
 
-        public async Task UpdateMyWorkoutDate(Workout workout)
+        public async Task UpdateMyWorkout(Workout workout)
         {
             _context.Workout.Update(workout);
 

@@ -14,7 +14,7 @@ namespace Training_Api.Interface
 
         Task<Workout?> GetWorkoutByIdAndUser(int userId, int workoutId);
 
-        Task UpdateMyWorkoutDate(Workout workout);
+        Task UpdateMyWorkout(Workout workout);
 
         Task UpdateMyWorkoutExcercise(WorkoutExercise workout);
 
