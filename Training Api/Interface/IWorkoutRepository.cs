@@ -6,7 +6,7 @@ namespace Training_Api.Interface
     {
         Task AddWorkout(Workout workout);
 
-        Task<List<Workout>> GetMyWorkout(int userId);
+        IQueryable<Workout> GetMyWorkout(int userId);
 
         IQueryable<Workout> GetAllWorkout();
 
@@ -23,6 +23,8 @@ namespace Training_Api.Interface
         Task DeleteMyWorkoutExercise(WorkoutExercise workoutExercise);
 
         Task AddMyWorkoutExercise(WorkoutExercise workoutExercise);
+
+        Task<bool> WorkoutTimeCheck(int userId, DateTimeOffset startDate, DateTimeOffset endDate, int? workoutId);
 
     }
 }

@@ -16,7 +16,7 @@ namespace Training_Api.Interface
 
         Task<List<WorkoutReadDto>> SearchWorkoutByData(DateTimeOffset? startData, DateTimeOffset? endData, int Page, int PageSize);
 
-        Task UpdateMyWorkoutDate(int workoutId, int userId, DateTimeOffset? newDate, DateTimeOffset? endDate);
+        Task UpdateMyWorkoutDate(int workoutId, int userId, DateTimeOffset newDate, DateTimeOffset endDate);
 
         Task UpdateMyWorkoutExcercise(int workoutId, int workoutExcerciseId, int userId, WorkoutExerciseRequestDto updateWorkout);
 

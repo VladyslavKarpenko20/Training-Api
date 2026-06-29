@@ -48,11 +48,18 @@ namespace Training_Api.Services
                 }).ToList()
             };
 
+
+            if (await _repository.WorkoutTimeCheck(userId, workoutWrite.startDate, workoutWrite.endDate, null))
+                throw new BadRequestExceptions("You already have a workout scheduled for that time");
+
             var now = DateTimeOffset.UtcNow;
 
-            if (workout.startDate > now)
+            if (workout.startDate <= now && workout.endDate >= now)
+                workout.Status = Status.InProgres;
+            else if (workout.endDate < now)
+                workout.Status = Status.Completed;
+            else if (workout.startDate > now)
                 workout.Status = Status.Planned;
-
             
             await _repository.AddWorkout(workout);
         }
@@ -62,16 +69,16 @@ namespace Training_Api.Services
             if (Page < 1 || PageSize < 1 || PageSize > 100)
                 throw new BadRequestExceptions("Invalid Page or PageSize data");
 
-            var listWorkout = await _repository.GetMyWorkout(userId);
+            IQueryable<Workout> listWorkout = _repository.GetMyWorkout(userId);
 
 
-            return listWorkout.Skip((Page - 1) * PageSize).Take(PageSize).Select(x => new WorkoutReadDto
+            return await listWorkout.Skip((Page - 1) * PageSize).Take(PageSize).Select(x => new WorkoutReadDto
             {
                 Id = x.Id,
                 startDate = x.startDate,
                 endDate = x.endDate,
                 UserId = x.UserId,
-                Status = ,
+                Status = x.Status,
                 WorkoutExerciseShort = x.WorkoutExercise.Select(y => new WorkoutExerciseShortDto
                 {
                     Id = y.Id,
@@ -79,7 +86,7 @@ namespace Training_Api.Services
                     Weight = y.Weight,
                     Repetitions = y.Repetitions
                 }).ToList()
-            }).ToList();
+            }).ToListAsync();
 
         }
 
@@ -154,14 +161,14 @@ namespace Training_Api.Services
             return await workout;
         }
 
-        public async Task UpdateMyWorkoutDate(int workoutId, int userId, DateTimeOffset? newStartDate, DateTimeOffset? newEndDate)
+        public async Task UpdateMyWorkoutDate(int workoutId, int userId, DateTimeOffset newStartDate, DateTimeOffset newEndDate)
         {
 
-            if (newStartDate == null || newStartDate > DateTimeOffset.Now.AddYears(1) || newStartDate < DateTimeOffset.Now.AddYears(-1)
-                || (newEndDate == null || newEndDate > DateTimeOffset.Now.AddYears(1) || newStartDate < DateTimeOffset.Now.AddYears(-1)))
+            if (newStartDate > DateTimeOffset.Now.AddYears(1) || newStartDate < DateTimeOffset.Now.AddYears(-1)
+                || newEndDate > DateTimeOffset.Now.AddYears(1) || newEndDate < DateTimeOffset.Now.AddYears(-1))
                 throw new BadRequestExceptions("Invalid time Data");
 
-            if (newEndDate < newStartDate.Value.AddDays(1))
+            if (newEndDate > newStartDate.AddDays(1))
                 throw new BadRequestExceptions("The training session cannot last longer than one day");
 
             if (newEndDate < newStartDate)
@@ -172,8 +179,23 @@ namespace Training_Api.Services
             if (workout == null)
                 throw new NotFoundExceptions("Workout not found");
 
-            workout.startDate = newStartDate.Value;
-            workout.endDate = newEndDate.Value;
+            if (workout.Status == Status.Cancelled)
+                throw new BadRequestExceptions("You cannot change a canceled workout");
+
+            if (await _repository.WorkoutTimeCheck(userId, newStartDate, newEndDate, workoutId))
+                throw new BadRequestExceptions("You already have a workout scheduled for that time");
+
+            var now = DateTimeOffset.UtcNow;
+
+            if (newStartDate <= now && newEndDate >= now)
+                workout.Status = Status.InProgres;
+            else if (newEndDate < now)
+                workout.Status = Status.Completed;
+            else if (newStartDate > now)
+                workout.Status = Status.Planned;
+
+            workout.startDate = newStartDate;
+            workout.endDate = newEndDate;
 
             await _repository.UpdateMyWorkout(workout);
         }

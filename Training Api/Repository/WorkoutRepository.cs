@@ -25,9 +25,9 @@ namespace Training_Api.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Workout>> GetMyWorkout(int userId)
+        public  IQueryable<Workout> GetMyWorkout(int userId)
         {
-            return await _context.Workout.AsNoTracking().Include(x => x.WorkoutExercise).Include(y => y.User).Where(x => x.UserId == userId).ToListAsync();
+            return _context.Workout.AsNoTracking().Include(x => x.WorkoutExercise).Include(y => y.User).Where(x => x.UserId == userId).AsQueryable();
         }
 
         public IQueryable<Workout> GetAllWorkout()
@@ -79,6 +79,15 @@ namespace Training_Api.Repository
             await _context.WorkoutExercise.AddAsync(workoutExercise);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> WorkoutTimeCheck(int userId, DateTimeOffset startDate, DateTimeOffset endDate, int? workoutId)
+        {
+            if (workoutId == null)
+                return await _context.Workout.AnyAsync(x => x.UserId == userId && x.startDate < endDate && x.endDate > startDate && x.Status != Status.Cancelled);
+
+            else
+                return await _context.Workout.AnyAsync(x => x.UserId == userId && x.startDate < endDate && x.endDate > startDate && x.Id != workoutId && x.Status != Status.Cancelled);
         }
 
     }

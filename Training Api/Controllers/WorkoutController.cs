@@ -101,7 +101,7 @@ namespace Training_Api.Controllers
 
         [Authorize]
         [HttpPut("Update/My/Workout/Date")]
-        public async Task<IActionResult> UpdateMyWorkoutDate([FromQuery] int workoutId,[FromQuery] DateTimeOffset? startDate, [FromQuery] DateTimeOffset? endDate)
+        public async Task<IActionResult> UpdateMyWorkoutDate([FromQuery] int workoutId,[FromQuery] DateTimeOffset startDate, [FromQuery] DateTimeOffset endDate)
         {
             string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
