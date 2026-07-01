@@ -43,7 +43,7 @@ namespace Training_Api.Controllers
         [HttpGet("Get/My/Workout/{Page:int}/{PageSize:int}")]
         public async Task<IActionResult> GetMyWorkout(int Page = 1, int PageSize = 10)
         {
-            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (int.TryParse(userId, out int res))
             {
@@ -103,7 +103,7 @@ namespace Training_Api.Controllers
         [HttpPut("Update/My/Workout/Date")]
         public async Task<IActionResult> UpdateMyWorkoutDate([FromQuery] int workoutId,[FromQuery] DateTimeOffset startDate, [FromQuery] DateTimeOffset endDate)
         {
-            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (!int.TryParse(userId, out int result))
                 return Unauthorized("Failed to identify user from token");
@@ -182,6 +182,20 @@ namespace Training_Api.Controllers
             await _services.CancelMyWorkout(workoutId, result);
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("Get/My/Exercise/By/Name/{NameExercise}/{Page:int}/{PageSize:int}")]
+        public async Task<IActionResult> GetMyExerciseByName(string NameExercise, int Page = 1, int PageSize = 10)
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userId, out int result))
+                return Unauthorized("Failed to identify user from token");
+
+            var listExercise = await _services.GetMyExerciseByName(NameExercise, Page, PageSize, result);
+
+            return Ok(listExercise);
         }
 
     }

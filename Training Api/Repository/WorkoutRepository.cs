@@ -25,7 +25,7 @@ namespace Training_Api.Repository
             await _context.SaveChangesAsync();
         }
 
-        public  IQueryable<Workout> GetMyWorkout(int userId)
+        public IQueryable<Workout> GetMyWorkout(int userId)
         {
             return _context.Workout.AsNoTracking().Include(x => x.WorkoutExercise).Include(y => y.User).Where(x => x.UserId == userId).AsQueryable();
         }
@@ -40,10 +40,10 @@ namespace Training_Api.Repository
         {
             _context.Workout.Remove(workout);
 
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<Workout?> GetWorkoutByIdAndUser(int userId , int workoutId)
+        public async Task<Workout?> GetWorkoutByIdAndUser(int userId, int workoutId)
         {
             return await _context.Workout.Include(x => x.WorkoutExercise).FirstOrDefaultAsync(x => x.Id == workoutId && x.UserId == userId);
         }
@@ -62,7 +62,7 @@ namespace Training_Api.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<WorkoutExercise?> GetWorkoutExcerciseById(int workoutId , int workoutExcerciseId)
+        public async Task<WorkoutExercise?> GetWorkoutExcerciseById(int workoutId, int workoutExcerciseId)
         {
             return await _context.WorkoutExercise.FirstOrDefaultAsync(x => x.Id == workoutExcerciseId && x.WorkoutId == workoutId);
         }
@@ -90,5 +90,10 @@ namespace Training_Api.Repository
                 return await _context.Workout.AnyAsync(x => x.UserId == userId && x.startDate < endDate && x.endDate > startDate && x.Id != workoutId && x.Status != Status.Cancelled);
         }
 
+        public  IQueryable<WorkoutExercise> GetMyExerciseByName(string NameExercise, int userId)
+        {
+            return _context.WorkoutExercise.AsNoTracking().Where(x => x.Workout.UserId == userId && x.Name!.ToLower() == NameExercise.ToLower());     
+        }
+    
     }
 }

@@ -26,5 +26,7 @@ namespace Training_Api.Interface
 
         Task<bool> WorkoutTimeCheck(int userId, DateTimeOffset startDate, DateTimeOffset endDate, int? workoutId);
 
+        IQueryable<WorkoutExercise> GetMyExerciseByName(string NameExercise, int userId);
+
     }
 }

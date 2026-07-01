@@ -12,7 +12,7 @@ namespace Training_Api.Services
     {
         private readonly IWorkoutRepository _repository;
 
-        public WorkoutServices(IWorkoutRepository repository) 
+        public WorkoutServices(IWorkoutRepository repository, IUserRepository userRepository) 
         {
             _repository = repository;
         }
@@ -309,7 +309,24 @@ namespace Training_Api.Services
         }
 
 
+        public async Task<List<WorkoutExerciseRequestDto>> GetMyExerciseByName(string Name, int Page, int PageSize, int userId)
+        {
+            if (string.IsNullOrEmpty(Name)) 
+                throw new BadRequestExceptions("The name cannot be empty");
 
+            if (Page < 1 || PageSize > 100 || PageSize < 1)
+                throw new BadRequestExceptions("Invalid Page or PageSize data");
+
+            IQueryable<WorkoutExercise> listExercise = _repository.GetMyExerciseByName(Name, userId);
+
+            return await listExercise.Skip((Page - 1) * PageSize).Take(PageSize).Select(x => new WorkoutExerciseRequestDto
+            {
+                Name = x.Name,
+                Repetitions= x.Repetitions,
+                Weight  = x.Weight
+            }).ToListAsync();
+
+        }
 
     }
 }
