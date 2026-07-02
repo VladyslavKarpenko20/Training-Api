@@ -28,5 +28,9 @@ namespace Training_Api.Interface
 
         IQueryable<WorkoutExercise> GetMyExerciseByName(string NameExercise, int userId);
 
+        IQueryable<Workout> GetWorkoutByStatistics(int userId);
+
+        IQueryable<WorkoutExercise> GetWorkoutExerciseByStatistics(int userId);
+
     }
 }

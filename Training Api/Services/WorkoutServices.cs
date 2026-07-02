@@ -1,10 +1,11 @@
-﻿using Training_Api.DtoModels;
-using Training_Api.Interface;
-using Training_Api.Exceptions;
-using Training_Api.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
-using Microsoft.EntityFrameworkCore;
+using Training_Api.DtoModels;
 using Training_Api.Enums;
+using Training_Api.Exceptions;
+using Training_Api.Interface;
+using Training_Api.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Training_Api.Services
 {
@@ -326,6 +327,56 @@ namespace Training_Api.Services
                 Weight  = x.Weight
             }).ToListAsync();
 
+        }
+
+        public async Task<WorkoutsStatsDto> GetWorkoutsStats(int userId)
+        {
+
+            var WorkoutQuery = _repository.GetWorkoutByStatistics(userId);
+
+            var WorkoutExerciseQuery = _repository.GetWorkoutExerciseByStatistics(userId);
+
+
+            var totalWorkout = await WorkoutQuery.CountAsync();
+
+            var totalWorkoutExercise = await WorkoutExerciseQuery.CountAsync();
+
+            var totalComplateWorkout = await WorkoutQuery.Where(x => x.Status == Status.Completed).CountAsync();
+
+            var totalCanceledWorkout = await WorkoutQuery.Where(x => x.Status == Status.Cancelled).CountAsync();
+
+            var totalInProgresWorkout = await WorkoutQuery.Where(x => x.Status == Status.InProgres).CountAsync();
+
+            var totalPlannedWorkout = await WorkoutQuery.Where(x => x.Status == Status.Planned).CountAsync();
+
+            var MaxWeight = await WorkoutExerciseQuery.MaxAsync(x => (int?)x.Weight);
+
+            var mostCommonExercise = await WorkoutExerciseQuery
+                .GroupBy(x => x.Name)
+                .OrderByDescending(x => x.Count())
+                .Select(x => new
+            {
+                Name = x.Key,
+                Count = x.Count()
+            })
+                .Select(x => x.Name)
+                .FirstOrDefaultAsync();
+
+            var WorkoutStats = new WorkoutsStatsDto
+            {
+                TotalWorkout =  totalWorkout,
+                TotalWorkoutExercise =  totalWorkoutExercise,
+                TotalComplateWorkout =  totalComplateWorkout,
+                TotalCanceledWorkout =  totalCanceledWorkout,
+                TotalInProgresWorkout =  totalInProgresWorkout,
+                TotalPlannedWorkout =  totalPlannedWorkout,
+                AvarageExercisPerWorkout = totalWorkout == 0 ? 0 : (double)totalWorkoutExercise  /  totalWorkout,
+                MaxWeight = MaxWeight,
+                mostCommonExercise =  mostCommonExercise
+
+            };
+
+            return WorkoutStats;
         }
 
     }

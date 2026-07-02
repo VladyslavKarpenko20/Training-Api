@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
 using NpgsqlTypes;
+using System.Globalization;
 using System.Threading.Tasks;
 using Training_Api.Context;
 using Training_Api.Enums;
@@ -93,6 +94,16 @@ namespace Training_Api.Repository
         public  IQueryable<WorkoutExercise> GetMyExerciseByName(string NameExercise, int userId)
         {
             return _context.WorkoutExercise.AsNoTracking().Where(x => x.Workout.UserId == userId && x.Name!.ToLower() == NameExercise.ToLower());     
+        }
+
+        public IQueryable<Workout> GetWorkoutByStatistics(int userId)
+        {
+            return _context.Workout.AsNoTracking().Where(x => x.UserId == userId);
+        }
+
+        public IQueryable<WorkoutExercise> GetWorkoutExerciseByStatistics(int userId)
+        {
+            return _context.WorkoutExercise.AsNoTracking().Where(x => x.Workout.UserId == userId);
         }
     
     }

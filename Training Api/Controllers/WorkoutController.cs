@@ -198,6 +198,20 @@ namespace Training_Api.Controllers
             return Ok(listExercise);
         }
 
+        [Authorize]
+        [HttpGet("Get/Workouts/Stats")]
+        public async Task<IActionResult> GetWorkoutsStats()
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userId, out int result))
+                return Unauthorized("Failed to identify user from token");
+
+            var stats = await _services.GetWorkoutsStats(result);
+
+            return Ok(stats);
+        }
+
     }
     
 }

@@ -29,5 +29,7 @@ namespace Training_Api.Interface
         Task CancelMyWorkout(int workoutId, int userId);
 
         Task<List<WorkoutExerciseRequestDto>> GetMyExerciseByName(string Name, int Page, int PageSize, int userId);
+
+        Task<WorkoutsStatsDto> GetWorkoutsStats(int userId);
     }
 }
