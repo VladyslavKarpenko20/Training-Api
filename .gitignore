@@ -5,3 +5,9 @@ obj/
 
 **/appsettings.json
 **/appsettings.Development.json
+
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates

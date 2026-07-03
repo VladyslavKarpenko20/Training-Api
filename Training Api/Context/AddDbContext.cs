@@ -39,6 +39,20 @@ namespace Training_Api.Context
             admin.Password = userPassword;
 
             modelBuilder.Entity<User>().HasData(admin);
+            
+            
+            
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Workouts)
+                .WithOne(w => w.User)
+                .HasForeignKey(w => w.UserId)   
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Workout>()
+                .HasMany(w => w.WorkoutExercise)
+                .WithOne(x => x.Workout)
+                .HasForeignKey(x => x.WorkoutId)
+                .OnDelete(DeleteBehavior.Cascade);  
         }
 
 
