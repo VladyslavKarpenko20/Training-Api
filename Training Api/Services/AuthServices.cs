@@ -6,31 +6,23 @@ using Training_Api.Exceptions;
 using Training_Api.Interface;
 using Training_Api.Models;
 using Microsoft.IdentityModel.Tokens;
+using Training_Api.Enums;
 
 namespace Training_Api.Services
 {
-    public class AuthServices : IAuthServices
+    public class AuthServices(
+        IUserRepository userRepository,
+        IPasswordHasher<User> passwordHasher,
+        IConfiguration configuration)
+        : IAuthServices
     {
-        private readonly IUserRepository _userRepository;
-
-        private readonly IPasswordHasher<User> _passwordHasher;
-
-        private readonly IConfiguration _configuration;
-
-        public AuthServices(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IConfiguration configuration)
+        public async Task Register(RegistrDto registrDto)
         {
-            _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
-            _configuration = configuration;
-        }
-
-        public async Task Registr(RegistrDto registrDto)
-        {
-            if (await _userRepository.SearchUserByEmail(registrDto.Email) != null)
+            if (await userRepository.SearchUserByEmail(registrDto.Email) != null)
                 throw new ConflictExceptions("This email already exists");
 
 
-            if (await _userRepository.SearchUserByName(registrDto.Name) != null)
+            if (await userRepository.SearchUserByName(registrDto.Name) != null)
                 throw new ConflictExceptions("This name already exists");
 
 
@@ -38,33 +30,38 @@ namespace Training_Api.Services
             {
                 Email = registrDto.Email,
                 Name = registrDto.Name,
-                Role = Role.Role.User
+                Role = Role.User
             };
 
-            user.Password = _passwordHasher.HashPassword(user, registrDto.Password);
+            user.Password = passwordHasher.HashPassword(user, registrDto.Password);
 
 
-            await _userRepository.AddUser(user);
+            await userRepository.AddUser(user);
         }
 
         public async Task<string> Login(LoginDto loginDto)
         {
-            var user = await _userRepository.SearchUserByEmail(loginDto.Email);
+            if (loginDto.Email == null || loginDto.Password == null)
+                throw new BadRequestExceptions("Email or password is missing");
+            
+            var user = await userRepository.SearchUserByEmail(loginDto.Email);
 
-            if (user == null)
-                throw new NotFoundExceptions("User not found");
+            if (user == null || user.Password == null )
+                throw new BadRequestExceptions("User or password is missing"); 
 
-            if (_passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password) == PasswordVerificationResult.Failed)
-                throw new UnAuthorizeExceptions("Uncorrect Password");
+            if (passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password) == PasswordVerificationResult.Failed)
+                throw new UnAuthorizeExceptions("Incorrect password");
 
-            return GenerateAcsesToken(user);
+            return GenerateAcsessToken(user);
 
         }
 
-        public string GenerateAcsesToken(User user)
+        private string GenerateAcsessToken(User user)
         {
-
-            var secretKey = _configuration["JWTSetting:SecretKey"] ?? "1234";
+            if (user.Email == null || user.Name == null)
+                throw new BadRequestExceptions("Email or Name is missing");
+                
+            var secretKey = configuration["JWTSetting:SecretKey"] ?? throw new  BadRequestExceptions("JWTSetting:SecretKey is missing") ;
 
             var claims = new List<Claim>
             {

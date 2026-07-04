@@ -4,7 +4,7 @@ namespace Training_Api.Interface
 {
     public interface IUserServices
     {
-        List<UserReadDto> GetAllUser(int Page, int PageSize);
+        List<UserReadDto> GetAllUser(int page, int pageSize);
 
         Task<UserReadDto> GetUserById(int userId);
 

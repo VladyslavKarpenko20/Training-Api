@@ -7,9 +7,9 @@ namespace Training_Api.DtoModels
     {
         public int Id { get; set; }
 
-        public DateTimeOffset startDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
         
-        public DateTimeOffset endDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
 
         public Status Status { get; set; }
 

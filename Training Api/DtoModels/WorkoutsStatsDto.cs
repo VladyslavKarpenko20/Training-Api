@@ -20,7 +20,7 @@ namespace Training_Api.DtoModels
 
         public int? MaxWeight { get; set; }
 
-        public string? mostCommonExercise { get; set; }
+        public string? MostCommonExercise { get; set; }
 
     }
 }

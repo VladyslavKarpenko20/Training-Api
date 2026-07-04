@@ -12,8 +12,8 @@ using Training_Api.Context;
 namespace Training_Api.Migrations
 {
     [DbContext(typeof(AddDbContext))]
-    [Migration("20260619100311_AddAdminUser")]
-    partial class AddAdminUser
+    [Migration("20260704233127_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,13 +34,16 @@ namespace Training_Api.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
                     b.Property<int>("Role")
                         .HasColumnType("integer");
@@ -52,10 +55,10 @@ namespace Training_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 10,
                             Email = "Admin@gmail.com",
                             Name = "Admin",
-                            Password = "AQAAAAIAAYagAAAAEHwXF4y6i+V9xUyhn4kKd9RgTkq0Nx2Gd5IasSxgZqWH/d3Kt84Cp5pw97A2zqacHA==",
+                            Password = "AQAAAAIAAYagAAAAEKJ932uNU9bgI9N0dHAgYRrbQSaE2fcvLXQPFlsAqoodDg0SkbNbiu+oT5yIfLb6uQ==",
                             Role = 1
                         });
                 });
@@ -68,8 +71,14 @@ namespace Training_Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset>("Date")
+                    b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -78,7 +87,7 @@ namespace Training_Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Workouts");
+                    b.ToTable("Workout");
                 });
 
             modelBuilder.Entity("Training_Api.Models.WorkoutExercise", b =>
@@ -90,7 +99,8 @@ namespace Training_Api.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<int>("Repetitions")
                         .HasColumnType("integer");
@@ -105,7 +115,7 @@ namespace Training_Api.Migrations
 
                     b.HasIndex("WorkoutId");
 
-                    b.ToTable("WorkoutExercises");
+                    b.ToTable("WorkoutExercise");
                 });
 
             modelBuilder.Entity("Training_Api.Models.Workout", b =>

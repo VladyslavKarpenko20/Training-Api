@@ -4,18 +4,18 @@ namespace Training_Api.Models
 {
     public class Workout
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
-        public DateTimeOffset startDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
-        public DateTimeOffset endDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
 
         public Status Status { get; set; }
 
-        public int UserId { get; set; }
+        public int UserId { get; init; }
 
-        public User? User { get; set; }
+        public User? User { get; init; }
 
-        public List<WorkoutExercise> WorkoutExercise { get; set; } = new();
+        public List<WorkoutExercise> WorkoutExercise { get; init; } = new();
     }
 }

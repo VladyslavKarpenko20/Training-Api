@@ -1,25 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Training_Api.DtoModels;
+﻿using Training_Api.DtoModels;
 using Training_Api.Exceptions;
 using Training_Api.Interface;
+using Training_Api.Enums; 
 
 namespace Training_Api.Services
 {
-    public class UserServices : IUserServices
+    public class UserServices(IUserRepository userRepository) : IUserServices
     {
-        private readonly IUserRepository _userRepository;
-
-        public UserServices(IUserRepository userRepository) 
+        public List<UserReadDto> GetAllUser(int page , int pageSize)
         {
-            _userRepository = userRepository;
-        }
-
-        public List<UserReadDto> GetAllUser(int Page , int PageSize)
-        {
-            if (Page < 1 || PageSize < 1 || PageSize > 10000)
+            if (page < 1 || pageSize < 1 || pageSize > 10000)
                 throw new BadRequestExceptions("Invalid Page or PageSize data");
 
-            var listUser = _userRepository.GetAllUser();
+            var listUser = userRepository.GetAllUser();
 
             var res  = listUser.Select(u => new UserReadDto
             {
@@ -27,7 +20,7 @@ namespace Training_Api.Services
                 Email = u.Email,
                 Name = u.Name,
                 Role = u.Role
-            }).Skip((Page - 1) * PageSize).Take(PageSize).ToList();
+            }).Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             return res;
         }
@@ -37,7 +30,7 @@ namespace Training_Api.Services
             if (userId < 1)
                 throw new BadRequestExceptions("Invalid userId data");
 
-            var res = await _userRepository.GetUserById(userId);
+            var res = await userRepository.GetUserById(userId);
 
             if (res == null)
                 throw new NotFoundExceptions("User not found");
@@ -51,8 +44,8 @@ namespace Training_Api.Services
                 Workouts = res.Workouts.Select(w => new WorkoutReadDto
                 {
                     Id= w.Id,
-                    startDate = w.startDate,
-                    endDate = w.endDate,
+                    StartDate = w.StartDate,
+                    EndDate = w.EndDate,
                     UserId = w.UserId,
                     WorkoutExerciseShort = w.WorkoutExercise.Select(we => new WorkoutExerciseShortDto
                     {
@@ -70,36 +63,36 @@ namespace Training_Api.Services
 
         public async Task DeleteUser(int userId)
         {
-            var user = await _userRepository.GetUserById(userId);
+            var user = await userRepository.GetUserById(userId);
 
             if (user == null)
                 throw new NotFoundExceptions("User not found");
 
-            await _userRepository.DeleteUser(user);
+            await userRepository.DeleteUser(user);
         }
 
         public async Task GiveRoleAdmin(int userId)
         {
-            var user = await _userRepository.GetUserById(userId);
+            var user = await userRepository.GetUserById(userId);
 
             if (user == null)
                 throw new NotFoundExceptions("User not found");
 
-            user.Role = Role.Role.Admin;
+            user.Role = Role.Admin;
 
-            await _userRepository.GiveRoleAdmin(user);
+            await userRepository.GiveRoleAdmin(user);
         }
 
         public async Task GiveRoleUser(int userId)
         {
-            var user = await _userRepository.GetUserById(userId);
+            var user = await userRepository.GetUserById(userId);
 
             if (user == null)
                 throw new NotFoundExceptions("User not found");
 
-            user.Role = Role.Role.User;
+            user.Role = Role.User;
 
-            await _userRepository.GiveRoleUser(user);
+            await userRepository.GiveRoleUser(user);
         }
     }
 }

@@ -31,13 +31,16 @@ namespace Training_Api.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
                     b.Property<int>("Role")
                         .HasColumnType("integer");
@@ -52,7 +55,7 @@ namespace Training_Api.Migrations
                             Id = 10,
                             Email = "Admin@gmail.com",
                             Name = "Admin",
-                            Password = "AQAAAAIAAYagAAAAEI84EGA3EtT8gzw13LoEtIe1v0MGo5TpR5CMLgKJU5jU/26X+vt/fW2QjJLKcEA+5Q==",
+                            Password = "AQAAAAIAAYagAAAAEKJ932uNU9bgI9N0dHAgYRrbQSaE2fcvLXQPFlsAqoodDg0SkbNbiu+oT5yIfLb6uQ==",
                             Role = 1
                         });
                 });
@@ -65,17 +68,17 @@ namespace Training_Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("endDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset>("startDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -93,7 +96,8 @@ namespace Training_Api.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<int>("Repetitions")
                         .HasColumnType("integer");

@@ -1,4 +1,4 @@
-﻿using Training_Api.Models;
+using Training_Api.Enums;
 
 namespace Training_Api.DtoModels
 {
@@ -10,7 +10,7 @@ namespace Training_Api.DtoModels
 
         public string? Email { get; set; }
 
-        public Role.Role Role { get; set; }
+        public Role Role { get; set; }
 
         public List<WorkoutReadDto> Workouts { get; set; } = new();
     }

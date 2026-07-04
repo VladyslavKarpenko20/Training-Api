@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Npgsql.EntityFrameworkCore;
 using System.Text;
 using Training_Api.Context;
 using Training_Api.Interface;
@@ -58,19 +57,19 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorize",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        Description = "Write Referens Token",
+        Type = SecuritySchemeType.Http,
+        Description = "Write Reference Token",
         Scheme = "bearer",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        In = ParameterLocation.Header,
         BearerFormat = "JWT",
 
 
     });
 
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -82,7 +81,7 @@ builder.Services.AddSwaggerGen(options =>
                 }
 
             },
-            new string[] { }
+            []
 
 
 

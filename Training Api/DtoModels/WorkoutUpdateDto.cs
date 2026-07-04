@@ -4,7 +4,7 @@
     {
         public DateTimeOffset Date { get; set; }
 
-        public List<WorkoutExerciseShortDto> ExerciseShorts { get; set; }
+        public List<WorkoutExerciseShortDto> ExerciseShorts { get; set; } = new();
 
     }
 }

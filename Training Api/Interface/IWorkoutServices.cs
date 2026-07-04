@@ -1,6 +1,5 @@
 ﻿using Training_Api.DtoModels;
 using Training_Api.Enums;
-using Training_Api.Models;
 
 namespace Training_Api.Interface
 {
@@ -8,13 +7,13 @@ namespace Training_Api.Interface
     {
         Task AddWorkout(WorkoutWriteDto workoutWrite, int userId);
 
-        Task<List<WorkoutReadDto>> GetMyWorkout(int userId, int Page, int PageSize);
+        Task<List<WorkoutReadDto>> GetMyWorkout(int userId, int page, int pageSize);
 
-        Task<List<WorkoutReadDto>> GetAllWorkout(int Page, int PageSize);
+        Task<List<WorkoutReadDto>> GetAllWorkout(int page, int pageSize);
 
         Task DeleteMyWorkout(int workoutId, int userId);
 
-        Task<List<WorkoutReadDto>> SearchWorkoutByData(DateTimeOffset? startData, DateTimeOffset? endData, int Page, int PageSize);
+        Task<List<WorkoutReadDto>> SearchWorkoutByData(DateTimeOffset? startData, DateTimeOffset? endData, int page, int pageSize);
 
         Task UpdateMyWorkoutDate(int workoutId, int userId, DateTimeOffset newDate, DateTimeOffset endDate);
 
@@ -24,11 +23,11 @@ namespace Training_Api.Interface
 
         Task AddMyWorkoutExercise(int workoutId, int userId, WorkoutExerciseRequestDto addWorkoutExercise);
 
-        Task<List<WorkoutReadDto>> SearchMyWorkoutByStatus(Status status, int userId, int Page, int PageSize);
+        Task<List<WorkoutReadDto>> SearchMyWorkoutByStatus(Status status, int userId, int page, int pageSize);
 
         Task CancelMyWorkout(int workoutId, int userId);
 
-        Task<List<WorkoutExerciseRequestDto>> GetMyExerciseByName(string Name, int Page, int PageSize, int userId);
+        Task<List<WorkoutExerciseRequestDto>> GetMyExerciseByName(string name, int page, int pageSize, int userId);
 
         Task<WorkoutsStatsDto> GetWorkoutsStats(int userId);
     }

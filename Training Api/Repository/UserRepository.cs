@@ -5,62 +5,56 @@ using Training_Api.Models;
 
 namespace Training_Api.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository(AddDbContext context) : IUserRepository
     {
-        private readonly AddDbContext _context;
 
-
-        public UserRepository(AddDbContext context) 
-        {
-            _context = context;
-        }
 
         public async Task<User?> SearchUserByEmail(string email)
         {
-            return await _context.User.FirstOrDefaultAsync(u => u.Email == email);
+            return await context.User.FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<User?> SearchUserByName(string name) 
         {
-            return await _context.User.FirstOrDefaultAsync(u => u.Name == name);
+            return await context.User.FirstOrDefaultAsync(u => u.Name == name);
         }
 
         public async Task AddUser(User user)
         {
-            await _context.User.AddAsync(user);
+            await context.User.AddAsync(user);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
 
         public IQueryable<User> GetAllUser()
         {
-            return _context.User.AsQueryable();
+            return context.User.AsQueryable();
         }
 
         public async Task<User?> GetUserById(int userId)
         {
-            return await _context.User.Include(w => w.Workouts).ThenInclude(w => w.WorkoutExercise).FirstOrDefaultAsync(u => u.Id == userId);
+            return await context.User.Include(w => w.Workouts).ThenInclude(w => w.WorkoutExercise).FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task DeleteUser(User user)
         {
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
+            context.User.Remove(user);
+            await context.SaveChangesAsync();
         }
 
         public async Task GiveRoleAdmin(User user)
         {
-            _context.User.Update(user);
+            context.User.Update(user);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task GiveRoleUser(User user)
         {
-            _context.User.Update(user);
+            context.User.Update(user);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
     }
 }

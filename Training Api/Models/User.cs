@@ -1,18 +1,24 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+using Training_Api.Enums;
+
 namespace Training_Api.Models
 {
     public class User
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
+        
+        [MaxLength(20)]
+        public string? Name { get; init; }
 
-        public string? Name { get; set; }
+        [MaxLength(30)]
+        public string? Email { get; init; }
 
-        public string? Email { get; set; }
-
+        [MaxLength(250)]
         public string? Password { get; set; }
 
-        public List<Workout> Workouts { get; set; } = new();
+        public List<Workout> Workouts { get; init; } = new();
 
-        public Role.Role Role { get; set; }
+        public Role Role { get; set; }
     }
 }

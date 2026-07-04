@@ -2,21 +2,14 @@
 
 namespace Training_Api.Middleware
 {
-    public class MyExceptionsMiddleware
+    public class MyExceptionsMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
-
-        public MyExceptionsMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
-
         public async Task InvokeAsync(HttpContext context)
         {
 
             try
             {
-                await _next(context);
+                await next(context);
             }
             catch (NotFoundExceptions ex)
             {

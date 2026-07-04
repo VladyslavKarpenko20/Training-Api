@@ -2,11 +2,11 @@
 {
     public class WorkoutExerciseRequestDto
     {
-        public string? Name { get; set; }
+        public string? Name { get; init; }
 
-        public int? Weight { get; set; }
+        public int? Weight { get; init; }
 
-        public int Repetitions { get; set; }
+        public int Repetitions { get; init; }
 
     }
 }

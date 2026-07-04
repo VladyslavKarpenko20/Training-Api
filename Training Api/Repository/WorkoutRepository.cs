@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
-using NpgsqlTypes;
-using System.Globalization;
-using System.Threading.Tasks;
 using Training_Api.Context;
 using Training_Api.Enums;
 using Training_Api.Interface;
@@ -10,100 +6,93 @@ using Training_Api.Models;
 
 namespace Training_Api.Repository
 {
-    public class WorkoutRepository : IWorkoutRepository
+    public class WorkoutRepository(AddDbContext context) : IWorkoutRepository
     {
-        private readonly AddDbContext _context;
-
-        public WorkoutRepository(AddDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task AddWorkout(Workout workout)
         {
-            await _context.Workout.AddAsync(workout);
+            await context.Workout.AddAsync(workout);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public IQueryable<Workout> GetMyWorkout(int userId)
         {
-            return _context.Workout.AsNoTracking().Include(x => x.WorkoutExercise).Include(y => y.User).Where(x => x.UserId == userId).AsQueryable();
+            return context.Workout.AsNoTracking().Include(x => x.WorkoutExercise).Where(x => x.UserId == userId).AsQueryable();
         }
 
         public IQueryable<Workout> GetAllWorkout()
         {
-            return _context.Workout.AsNoTracking().Include(x => x.WorkoutExercise).AsQueryable();
+            return context.Workout.AsNoTracking().Include(x => x.WorkoutExercise);
         }
 
 
         public async Task DeleteMyWorkout(Workout workout)
         {
-            _context.Workout.Remove(workout);
+            context.Workout.Remove(workout);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task<Workout?> GetWorkoutByIdAndUser(int userId, int workoutId)
         {
-            return await _context.Workout.Include(x => x.WorkoutExercise).FirstOrDefaultAsync(x => x.Id == workoutId && x.UserId == userId);
+            return await context.Workout.Include(x => x.WorkoutExercise).FirstOrDefaultAsync(x => x.Id == workoutId && x.UserId == userId);
         }
 
         public async Task UpdateMyWorkout(Workout workout)
         {
-            _context.Workout.Update(workout);
+            context.Workout.Update(workout);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task UpdateMyWorkoutExcercise(WorkoutExercise workout)
         {
-            _context.WorkoutExercise.Update(workout);
+            context.WorkoutExercise.Update(workout);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task<WorkoutExercise?> GetWorkoutExcerciseById(int workoutId, int workoutExcerciseId)
         {
-            return await _context.WorkoutExercise.FirstOrDefaultAsync(x => x.Id == workoutExcerciseId && x.WorkoutId == workoutId);
+            return await context.WorkoutExercise.FirstOrDefaultAsync(x => x.Id == workoutExcerciseId && x.WorkoutId == workoutId);
         }
 
         public async Task DeleteMyWorkoutExercise(WorkoutExercise workoutExercise)
         {
-            _context.WorkoutExercise.Remove(workoutExercise);
+            context.WorkoutExercise.Remove(workoutExercise);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task AddMyWorkoutExercise(WorkoutExercise workoutExercise)
         {
-            await _context.WorkoutExercise.AddAsync(workoutExercise);
+            await context.WorkoutExercise.AddAsync(workoutExercise);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task<bool> WorkoutTimeCheck(int userId, DateTimeOffset startDate, DateTimeOffset endDate, int? workoutId)
         {
             if (workoutId == null)
-                return await _context.Workout.AnyAsync(x => x.UserId == userId && x.startDate < endDate && x.endDate > startDate && x.Status != Status.Cancelled);
+                return await context.Workout.AnyAsync(x => x.UserId == userId && x.StartDate < endDate && x.EndDate > startDate && x.Status != Status.Cancelled);
 
             else
-                return await _context.Workout.AnyAsync(x => x.UserId == userId && x.startDate < endDate && x.endDate > startDate && x.Id != workoutId && x.Status != Status.Cancelled);
+                return await context.Workout.AnyAsync(x => x.UserId == userId && x.StartDate < endDate && x.EndDate > startDate && x.Id != workoutId && x.Status != Status.Cancelled);
         }
 
-        public  IQueryable<WorkoutExercise> GetMyExerciseByName(string NameExercise, int userId)
+        public  IQueryable<WorkoutExercise> GetMyExerciseByName(string nameExercise, int userId)
         {
-            return _context.WorkoutExercise.AsNoTracking().Where(x => x.Workout.UserId == userId && x.Name!.ToLower() == NameExercise.ToLower());     
+            return context.WorkoutExercise.AsNoTracking().Where(x => x.Workout != null && x.Workout.UserId == userId && x.Name!.ToLower() == nameExercise.ToLower());     
         }
 
         public IQueryable<Workout> GetWorkoutByStatistics(int userId)
         {
-            return _context.Workout.AsNoTracking().Where(x => x.UserId == userId);
+            return context.Workout.AsNoTracking().Where(x => x.UserId == userId);
         }
 
         public IQueryable<WorkoutExercise> GetWorkoutExerciseByStatistics(int userId)
         {
-            return _context.WorkoutExercise.AsNoTracking().Where(x => x.Workout.UserId == userId);
+            return context.WorkoutExercise.AsNoTracking().Where(x => x.Workout != null && x.Workout.UserId == userId);
         }
     
     }

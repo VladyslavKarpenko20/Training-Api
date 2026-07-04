@@ -7,41 +7,26 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Training_Api.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateTable : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Password",
-                table: "User",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "text");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "User",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "text");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Email",
-                table: "User",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "text");
-
-            migrationBuilder.AddColumn<int>(
-                name: "Role",
-                table: "User",
-                type: "integer",
-                nullable: false,
-                defaultValue: 0);
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    Email = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
+                    Password = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
+                    Role = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Workout",
@@ -49,7 +34,9 @@ namespace Training_Api.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    StartDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -70,7 +57,7 @@ namespace Training_Api.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     WorkoutId = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     Weight = table.Column<int>(type: "integer", nullable: true),
                     Repetitions = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -84,6 +71,11 @@ namespace Training_Api.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "Email", "Name", "Password", "Role" },
+                values: new object[] { 10, "Admin@gmail.com", "Admin", "AQAAAAIAAYagAAAAEKJ932uNU9bgI9N0dHAgYRrbQSaE2fcvLXQPFlsAqoodDg0SkbNbiu+oT5yIfLb6uQ==", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workout_UserId",
@@ -105,39 +97,8 @@ namespace Training_Api.Migrations
             migrationBuilder.DropTable(
                 name: "Workout");
 
-            migrationBuilder.DropColumn(
-                name: "Role",
-                table: "User");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Password",
-                table: "User",
-                type: "text",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "User",
-                type: "text",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Email",
-                table: "User",
-                type: "text",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

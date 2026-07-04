@@ -1,4 +1,4 @@
-﻿namespace Training_Api.Role
+﻿namespace Training_Api.Enums
 {
     public enum Role
     {

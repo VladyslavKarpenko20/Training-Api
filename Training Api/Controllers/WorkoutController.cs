@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using Training_Api.DtoModels;
 using Training_Api.Enums;
@@ -11,15 +9,8 @@ namespace Training_Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WorkoutController : ControllerBase
+    public class WorkoutController(IWorkoutServices services) : ControllerBase
     {
-        private readonly IWorkoutServices _services;
-
-        public WorkoutController(IWorkoutServices services)
-        {
-            _services = services;
-        }
-
         [Authorize]
         [HttpPost("Add/Workout")]
         public async Task<IActionResult> AddWorkout([FromBody] WorkoutWriteDto workoutWrite)
@@ -29,7 +20,7 @@ namespace Training_Api.Controllers
             if (int.TryParse(userid, out var id))
             {
                 {
-                    await _services.AddWorkout(workoutWrite, id);
+                    await services.AddWorkout(workoutWrite, id);
 
                     return Ok();
                 }
@@ -40,14 +31,14 @@ namespace Training_Api.Controllers
         }
 
         [Authorize]
-        [HttpGet("Get/My/Workout/{Page:int}/{PageSize:int}")]
-        public async Task<IActionResult> GetMyWorkout(int Page = 1, int PageSize = 10)
+        [HttpGet("Get/My/Workout/{page:int}/{pageSize:int}")]
+        public async Task<IActionResult> GetMyWorkout(int page = 1, int pageSize = 10)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (int.TryParse(userId, out int res))
             {
-                var list = await _services.GetMyWorkout(res, Page, PageSize);
+                var list = await services.GetMyWorkout(res, page, pageSize);
 
                 return Ok(list);
             }
@@ -55,11 +46,11 @@ namespace Training_Api.Controllers
                 return Unauthorized("Failed to identify user from token");
         }
 
-        [Authorize(Roles = nameof(Role.Role.Admin))]
-        [HttpGet("Get/All/Workout/{Page:int}/{PageSize:int}")]
-        public async Task<IActionResult> GetAllWorkout(int Page = 1, int PageSize = 10)
+        [Authorize(Roles = nameof(Role.Admin))]
+        [HttpGet("Get/All/Workout/{page:int}/{pageSize:int}")]
+        public async Task<IActionResult> GetAllWorkout(int page = 1, int pageSize = 10)
         {
-            var listWorkout = await _services.GetAllWorkout(Page, PageSize);
+            var listWorkout = await services.GetAllWorkout(page, pageSize);
 
             return Ok(listWorkout);
         }
@@ -72,7 +63,7 @@ namespace Training_Api.Controllers
 
             if (int.TryParse(userId, out int result))
             {
-                await _services.DeleteMyWorkout(workoutId, result);
+                await services.DeleteMyWorkout(workoutId, result);
 
                 return Ok();
             }
@@ -80,20 +71,20 @@ namespace Training_Api.Controllers
                 return Unauthorized("Failed to identify user from token");
         }
 
-        [Authorize(Roles = nameof(Role.Role.Admin))]
+        [Authorize(Roles = nameof(Role.Admin))]
         [HttpDelete("Delete/Workout/{userId:int}/{workoutId:int}")]
         public async Task<IActionResult> DeleteMyWorkout(int userId, int workoutId)
         {
-            await _services.DeleteMyWorkout(workoutId, userId);
+            await services.DeleteMyWorkout(workoutId, userId);
 
             return Ok();
         }
 
         [Authorize]
         [HttpGet("Get/Workout/By/Date")]
-        public async Task<IActionResult> GetWorkoutByDate([FromQuery] DateTimeOffset? startDate, [FromQuery] DateTimeOffset? endDate, [FromQuery] int Page = 1, [FromQuery] int PageSize = 10 )
+        public async Task<IActionResult> GetWorkoutByDate([FromQuery] DateTimeOffset? startDate, [FromQuery] DateTimeOffset? endDate, [FromQuery] int page = 1, [FromQuery] int pageSize = 10 )
         {
-            var listWorkout = await _services.SearchWorkoutByData(startDate, endDate, Page, PageSize);
+            var listWorkout = await services.SearchWorkoutByData(startDate, endDate, page, pageSize);
 
             return Ok(listWorkout);
 
@@ -109,7 +100,7 @@ namespace Training_Api.Controllers
                 return Unauthorized("Failed to identify user from token");
 
 
-            await _services.UpdateMyWorkoutDate(workoutId, result, startDate, endDate);
+            await services.UpdateMyWorkoutDate(workoutId, result, startDate, endDate);
 
             return Ok();
         }
@@ -123,7 +114,7 @@ namespace Training_Api.Controllers
             if (!int.TryParse(userId, out int result))
                 return Unauthorized("Failed to identify user from token");
 
-            await _services.UpdateMyWorkoutExcercise(workoutId, workoutExcerciseId,result,updateWorkout);
+            await services.UpdateMyWorkoutExcercise(workoutId, workoutExcerciseId,result,updateWorkout);
 
             return Ok();
         }
@@ -137,7 +128,7 @@ namespace Training_Api.Controllers
             if (!int.TryParse(userId, out int result))
                 return Unauthorized("Failed to identify user from token");
 
-            await _services.DeleteMyWorkoutExcercise(workoutId,workoutExerciseId, result);
+            await services.DeleteMyWorkoutExcercise(workoutId,workoutExerciseId, result);
 
             return Ok();
         }
@@ -151,21 +142,21 @@ namespace Training_Api.Controllers
             if (!int.TryParse(userId, out int result))
                 return Unauthorized("Failed to identify user from token");
 
-            await _services.AddMyWorkoutExercise(workoutId,result, addWorkoutExercise);
+            await services.AddMyWorkoutExercise(workoutId,result, addWorkoutExercise);
 
             return Ok();
         }
 
         [Authorize]
-        [HttpGet("Search/Workout/By/Status/{Page:int}/{PageSize:int}")]
-        public async Task<IActionResult> SearchWorkoutByStatus(Status status,int Page = 1, int PageSize = 10)
+        [HttpGet("Search/Workout/By/Status/{page:int}/{pageSize:int}")]
+        public async Task<IActionResult> SearchWorkoutByStatus(Status status,int page = 1, int pageSize = 10)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (!int.TryParse(userId, out int result))
                 return Unauthorized("Failed to identify user from token");
 
-            var listWorkout = await _services.SearchMyWorkoutByStatus(status, result, Page, PageSize);
+            var listWorkout = await services.SearchMyWorkoutByStatus(status, result, page, pageSize);
             
             return Ok(listWorkout);
         }
@@ -179,21 +170,21 @@ namespace Training_Api.Controllers
             if (!int.TryParse(userId, out int result))
                 return Unauthorized("Failed to identify user from token");
 
-            await _services.CancelMyWorkout(workoutId, result);
+            await services.CancelMyWorkout(workoutId, result);
 
             return Ok();
         }
 
         [Authorize]
-        [HttpGet("Get/My/Exercise/By/Name/{NameExercise}/{Page:int}/{PageSize:int}")]
-        public async Task<IActionResult> GetMyExerciseByName(string NameExercise, int Page = 1, int PageSize = 10)
+        [HttpGet("Get/My/Exercise/By/Name/{nameExercise}/{page:int}/{pageSize:int}")]
+        public async Task<IActionResult> GetMyExerciseByName(string nameExercise, int page = 1, int pageSize = 10)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (!int.TryParse(userId, out int result))
                 return Unauthorized("Failed to identify user from token");
 
-            var listExercise = await _services.GetMyExerciseByName(NameExercise, Page, PageSize, result);
+            var listExercise = await services.GetMyExerciseByName(nameExercise, page, pageSize, result);
 
             return Ok(listExercise);
         }
@@ -207,7 +198,7 @@ namespace Training_Api.Controllers
             if (!int.TryParse(userId, out int result))
                 return Unauthorized("Failed to identify user from token");
 
-            var stats = await _services.GetWorkoutsStats(result);
+            var stats = await services.GetWorkoutsStats(result);
 
             return Ok(stats);
         }
