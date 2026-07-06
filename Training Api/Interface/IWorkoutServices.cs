@@ -13,7 +13,7 @@ namespace Training_Api.Interface
 
         Task DeleteMyWorkout(int workoutId, int userId);
 
-        Task<List<WorkoutReadDto>> SearchWorkoutByData(DateTimeOffset? startData, DateTimeOffset? endData, int page, int pageSize);
+        Task<List<WorkoutReadDto>> SearchWorkoutByData(DateTimeOffset? startData, DateTimeOffset? endData, int page, int pageSize, int userId);
 
         Task UpdateMyWorkoutDate(int workoutId, int userId, DateTimeOffset newDate, DateTimeOffset endDate);
 

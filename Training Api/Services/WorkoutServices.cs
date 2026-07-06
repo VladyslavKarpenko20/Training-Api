@@ -24,7 +24,7 @@ namespace Training_Api.Services
 
             foreach(var workoutExercise in workoutWrite.WorkoutsExercise)
             {
-                if(workoutExercise.Repetitions < 1 || workoutExercise.Weight < 1 || string.IsNullOrWhiteSpace(workoutExercise.Name))  
+                if(workoutExercise.Repetitions < 1 || workoutExercise.Weight < 0 || string.IsNullOrWhiteSpace(workoutExercise.Name))  
                     throw new BadRequestExceptions("Invalid WorkoutExercie data");
             }
 
@@ -118,7 +118,7 @@ namespace Training_Api.Services
             await repository.DeleteMyWorkout(workout);
         }
 
-        public async Task<List<WorkoutReadDto>> SearchWorkoutByData(DateTimeOffset? startDat, DateTimeOffset? endDate, int page, int pageSize)
+        public async Task<List<WorkoutReadDto>> SearchWorkoutByData(DateTimeOffset? startDat, DateTimeOffset? endDate, int page, int pageSize, int userId)
         {
             if (page < 1 || pageSize < 1 || pageSize > 100)
                 throw new BadRequestExceptions("Invalid Page or PageSize data");
@@ -128,6 +128,8 @@ namespace Training_Api.Services
 
 
             IQueryable<Workout> listWorkout = repository.GetAllWorkout();
+
+            listWorkout = listWorkout.Where(x => x.UserId == userId);
             
             if (startDat != null)
                 listWorkout = listWorkout.Where(x => x.StartDate >= startDat);

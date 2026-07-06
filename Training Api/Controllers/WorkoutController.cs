@@ -84,7 +84,12 @@ namespace Training_Api.Controllers
         [HttpGet("Get/Workout/By/Date")]
         public async Task<IActionResult> GetWorkoutByDate([FromQuery] DateTimeOffset? startDate, [FromQuery] DateTimeOffset? endDate, [FromQuery] int page = 1, [FromQuery] int pageSize = 10 )
         {
-            var listWorkout = await services.SearchWorkoutByData(startDate, endDate, page, pageSize);
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userId, out int result))
+                return Unauthorized("Failed to identify user from token");
+            
+            var listWorkout = await services.SearchWorkoutByData(startDate, endDate, page, pageSize, result);
 
             return Ok(listWorkout);
 
