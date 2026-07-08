@@ -47,6 +47,22 @@ REST API for workout planning, exercise management, and user authentication buil
 
 - Swagger / OpenAPI
 
+- Postman
+
+## Postman Collection
+
+Postman collection and environment are available in the `Postman` folder.
+
+- Import the collection.
+
+- Import the environment.
+
+- Set `baseUrl`.
+
+- Login and paste JWT token into the `token` variable.
+
+- Test the endpoints.
+
 
 ## Getting Started
 
@@ -85,4 +101,3 @@ REST API for workout planning, exercise management, and user authentication buil
 
 - Serilog
 
-- Postman Collection

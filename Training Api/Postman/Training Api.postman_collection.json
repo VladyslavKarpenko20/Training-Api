@@ -1,0 +1,748 @@
+{
+  "info": {
+    "_postman_id": "4ad90c8a-6c5c-457b-9978-c672dd690663",
+    "name": "Training Api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54728072",
+    "_collection_link": "https://go.postman.co/collection/54728072-4ad90c8a-6c5c-457b-9978-c672dd690663?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "GetAllUser",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/User/Get/All/User/1/10",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "User",
+                "Get",
+                "All",
+                "User",
+                "1",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetUserById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/User/Get/User/By/Id/10",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "User",
+                "Get",
+                "User",
+                "By",
+                "Id",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteUserById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/User/Delete/User/By/Id/12",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "User",
+                "Delete",
+                "User",
+                "By",
+                "Id",
+                "12"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GiveUserRoleAdmin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/User/Give/Role/Admin/11",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "User",
+                "Give",
+                "Role",
+                "Admin",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GiveUserRoleUser",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/User/Give/Role/User/11",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "User",
+                "Give",
+                "Role",
+                "User",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"User\",\r\n    \"email\": \"User@gmail.com\",\r\n    \"password\": \"User1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}api/Auth/Registr",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Auth",
+                "Registr"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"User@gmail.com\",\r\n    \"password\": \"User1234\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}api/Auth/Login",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Auth",
+                "Login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Workout",
+      "item": [
+        {
+          "name": "AddWorkout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"startDate\": \"2026-07-06T19:08:09.883Z\",\r\n  \"endDate\": \"2026-07-07T19:08:09.883Z\",\r\n  \"workoutsExercise\": [\r\n    {\r\n      \"name\": \"Жим\",\r\n      \"weight\": 100,\r\n      \"repetitions\": 2\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Add/Workout",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Add",
+                "Workout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetMyWorkout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Get/My/Workout/1/10",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Get",
+                "My",
+                "Workout",
+                "1",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetAllWorkout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Get/All/Workout/1/10",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Get",
+                "All",
+                "Workout",
+                "1",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteMyWorkout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Delete/My/Workout/1",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Delete",
+                "My",
+                "Workout",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteWorkout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Delete/Workout/1/1",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Delete",
+                "Workout",
+                "1",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetWorkoutByDate",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Get/Workout/By/Date?page=1&pageSize=10",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Get",
+                "Workout",
+                "By",
+                "Date"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateMyWorkoutDate",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Workout/Update/My/Workout/Date?workoutId=2&startDate=2026-07-08T10:00:00Z&endDate=2026-07-08T11:30:00Z",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Workout",
+                "Update",
+                "My",
+                "Workout",
+                "Date"
+              ],
+              "query": [
+                {
+                  "key": "workoutId",
+                  "value": "2"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2026-07-08T10:00:00Z"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2026-07-08T11:30:00Z"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateWorkoutExercise",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Присідання\",\r\n  \"weight\": 0,\r\n  \"repetitions\": 10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Update/Workout/Excercise/1/1",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Update",
+                "Workout",
+                "Excercise",
+                "1",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteMyWorkoutExercise",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Delete/My/WorkoutExercise/1/1",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Delete",
+                "My",
+                "WorkoutExercise",
+                "1",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AddMyWorkoutExercise",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Підтягування\",\r\n  \"weight\": 20,\r\n  \"repetitions\": 8\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Add/My/WorkoutExercise/1",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Add",
+                "My",
+                "WorkoutExercise",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SearchWorkoutByStatus",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Search/Workout/By/Status/1/10?status=0",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Search",
+                "Workout",
+                "By",
+                "Status",
+                "1",
+                "10"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CancellMyWorkout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Cancell/My/Workout/1",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Cancell",
+                "My",
+                "Workout",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetMyExerciseByName",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Get/My/Exercise/By/Name/%D0%96%D0%B8%D0%BC/1/10",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Get",
+                "My",
+                "Exercise",
+                "By",
+                "Name",
+                "%D0%96%D0%B8%D0%BC",
+                "1",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Statistics",
+      "item": [
+        {
+          "name": "GetWorkoutStats",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}api/Workout/Get/Workouts/Stats",
+              "host": [
+                "{{baseUrl}}api"
+              ],
+              "path": [
+                "Workout",
+                "Get",
+                "Workouts",
+                "Stats"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
