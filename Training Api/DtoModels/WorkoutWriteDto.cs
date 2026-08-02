@@ -2,10 +2,10 @@
 {
     public class WorkoutWriteDto
     {
-        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset StartDate { get; init; }
 
-        public DateTimeOffset EndDate { get; set; } 
+        public DateTimeOffset EndDate { get; init; } 
 
-        public List<WorkoutExerciseWriteDto> WorkoutsExercise { get; set; } = new();
+        public List<WorkoutExerciseWriteDto> WorkoutsExercise { get; init; } = new();
     }
 }

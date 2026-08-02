@@ -206,7 +206,7 @@ namespace Training_Api.Services
             var workoutExcercise = await repository.GetWorkoutExcerciseById(workoutId, workoutExcerciseId);
 
             if (workoutExcercise == null)
-                throw new NotFoundExceptions("Workout excercise not found");
+                throw new NotFoundExceptions("Workout exercise not found");
 
             if (string.IsNullOrWhiteSpace(updateWorkout.Name) || updateWorkout.Weight < 0 || updateWorkout.Repetitions < 1)
                 throw new BadRequestExceptions("Invalid WorkoutExercise data");
@@ -227,12 +227,12 @@ namespace Training_Api.Services
             if (workout == null)
                 throw new NotFoundExceptions("Workout not found");
 
-            var workoutExcercise = await repository.GetWorkoutExcerciseById(workoutId, workoutExcerciseId);
+            var workoutExercise = await repository.GetWorkoutExcerciseById(workoutId, workoutExcerciseId);
 
-            if (workoutExcercise == null)
+            if (workoutExercise == null)
                 throw new NotFoundExceptions("WorkoutExercise not found");
 
-            await repository.DeleteMyWorkoutExercise(workoutExcercise);
+            await repository.DeleteMyWorkoutExercise(workoutExercise);
         }
 
         public async Task AddMyWorkoutExercise(int workoutId , int userId, WorkoutExerciseRequestDto addWorkoutExercise)
@@ -372,6 +372,9 @@ namespace Training_Api.Services
 
             return workoutStats;
         }
-
+        
+        
+        
     }
+    
 }

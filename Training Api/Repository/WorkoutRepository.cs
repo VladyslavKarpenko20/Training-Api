@@ -75,7 +75,6 @@ namespace Training_Api.Repository
         {
             if (workoutId == null)
                 return await context.Workout.AnyAsync(x => x.UserId == userId && x.StartDate < endDate && x.EndDate > startDate && x.Status != Status.Cancelled);
-
             else
                 return await context.Workout.AnyAsync(x => x.UserId == userId && x.StartDate < endDate && x.EndDate > startDate && x.Id != workoutId && x.Status != Status.Cancelled);
         }
