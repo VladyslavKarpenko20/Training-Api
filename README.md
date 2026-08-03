@@ -89,8 +89,6 @@ Postman collection and environment are available in the `Postman` folder.
 
 - FluentValidation
 
-- Unit Tests
-
 - Docker
 
 - Redis
